@@ -1,0 +1,4201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Green Vision Technology - Interactive Map for Global Agriculture Monitoring">
+    <meta name="keywords" content="agriculture, farming, AI, sustainability, data analytics, satellite monitoring, technology map">
+    <meta name="author" content="Green Vision">
+    <meta name="theme-color" content="#00ff88">
+    
+    <!-- Performance & Mobile Optimization -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><filter id='glow'><feGaussianBlur stdDeviation='3' result='coloredBlur'/><feMerge><feMergeNode in='coloredBlur'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><circle cx='50' cy='50' r='45' fill='%23000000'/><path d='M30 70 Q50 30 70 70 Q50 50 30 70' fill='%2300cc66' filter='url(%23glow)'/><circle cx='50' cy='55' r='3' fill='%2300ffcc'/></svg>">
+    
+    <title>Try Our Technology - Green Vision</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- Responsive & Performance Optimizations -->
+    <link rel="stylesheet" href="{% static 'css/responsive-optimizations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/performance-boost.css' %}">
+    
+    <!-- AOS CSS for animations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    
+    <!-- Loading Screen Styles -->
+    <style>
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .loading-icon {
+            font-size: 3rem;
+            color: #4dd084;
+            animation: leafPulse 2s ease-in-out infinite;
+        }
+
+        .loading-text-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4dd0d0, #4dd084);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(77, 208, 208, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4dd0d0, #4dd084);
+            width: 0%;
+            animation: loadingProgress 2s ease-in-out forwards;
+            box-shadow: 0 0 10px rgba(77, 208, 208, 0.5);
+        }
+
+        .loading-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .loading-percentage {
+            font-family: 'Orbitron', monospace;
+            color: #4dd0d0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        @keyframes leafPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px #4dd084);
+            }
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 15px #4dd084);
+            }
+        }
+
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+    </style>
+    
+    <style>
+        /* Page specific styles - Soft & comfortable colors */
+        :root {
+            --primary-dark: #000000;
+            --secondary-dark: #0a0a0a;
+            --soft-teal: #5eb8b8;
+            --soft-green: #6bc99d;
+            --muted-gray: #8b95a1;
+            --font-primary: 'Orbitron', 'Courier New', monospace;
+            --font-secondary: 'Poppins', 'Arial', sans-serif;
+        }
+        
+        /* Smooth Scroll Animation */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: #000000;
+            color: #e8eef3;
+            font-family: var(--font-secondary);
+            padding-top: 80px;
+        }
+        
+        /* Custom Scroll Animations */
+        [data-aos] {
+            transition-property: transform, opacity;
+        }
+        
+        /* Hover effects on scroll elements */
+        .control-panel,
+        .info-card,
+        .weather-forecast-section,
+        .ai-models-section,
+        .guide-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .control-panel:hover,
+        .info-card:hover,
+        .weather-forecast-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(94, 184, 184, 0.2);
+        }
+        
+        /* Parallax effect on sections */
+        section {
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        
+        /* Keyframe Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+        
+        /* Apply animations on scroll */
+        .stat-item {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .guide-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .weather-result-card,
+        .prediction-card,
+        .forecast-item {
+            animation: fadeInScale 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .weather-result-card:nth-child(1) { animation-delay: 0.1s; }
+        .weather-result-card:nth-child(2) { animation-delay: 0.2s; }
+        .weather-result-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        .tech-page-header {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: #000000;
+        }
+        
+        .tech-title {
+            font-family: var(--font-primary);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-subtitle {
+            font-size: 1.05rem;
+            color: rgba(232, 238, 243, 0.65);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        .map-section {
+            padding: 60px 0 80px;
+            position: relative;
+            overflow: hidden;
+            background: #000000;
+        }
+        
+        .control-panel {
+            background: rgba(26, 31, 38, 0.9);
+            border: 1.5px solid rgba(94, 184, 184, 0.18);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-label {
+            font-family: var(--font-secondary);
+            font-size: 0.85rem;
+            color: var(--soft-teal);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        
+        .form-label i {
+            opacity: 0.7;
+            margin-right: 6px;
+        }
+        
+        .form-select {
+            background: rgba(15, 20, 25, 0.7);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 8px;
+            color: #e8eef3;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-select:focus {
+            background: rgba(15, 20, 25, 0.9);
+            border-color: rgba(94, 184, 184, 0.35);
+            box-shadow: 0 0 12px rgba(94, 184, 184, 0.12);
+            color: #e8eef3;
+            outline: none;
+        }
+        
+        .form-select option {
+            background: #1a1f26;
+            color: #e8eef3;
+            padding: 10px;
+        }
+        
+        #map {
+            height: 600px;
+            border: 1.5px solid rgba(94, 184, 184, 0.18);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            filter: brightness(0.96) contrast(0.96);
+        }
+        
+        .info-card {
+            background: rgba(26, 31, 38, 0.9);
+            border: 1.5px solid rgba(94, 184, 184, 0.18);
+            border-radius: 12px;
+            padding: 22px;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: rgba(94, 184, 184, 0.28);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .info-card h4 {
+            font-family: var(--font-primary);
+            color: var(--soft-green);
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .info-card h4 i {
+            opacity: 0.8;
+            margin-right: 8px;
+        }
+        
+        .info-card p {
+            color: rgba(232, 238, 243, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(15, 20, 25, 0.5);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            background: rgba(15, 20, 25, 0.7);
+            transform: translateX(3px);
+        }
+        
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(94, 184, 184, 0.12);
+            border-radius: 8px;
+            color: var(--soft-teal);
+            font-size: 0.9rem;
+        }
+        
+        .stat-item span {
+            color: rgba(232, 238, 243, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        /* Softer background effects */
+        .background-effects {
+            opacity: 0.3;
+        }
+        
+        .floating-grid {
+            background-image: 
+                linear-gradient(rgba(94, 184, 184, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(94, 184, 184, 0.015) 1px, transparent 1px);
+        }
+        
+        /* Weather Forecast Section */
+        .weather-forecast-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(26, 31, 38, 0.9);
+            border: 1.5px solid rgba(94, 184, 184, 0.18);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .weather-title {
+            font-family: var(--font-primary);
+            color: var(--soft-green);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .weather-subtitle {
+            color: rgba(232, 238, 243, 0.65);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+        
+        .weather-form-container {
+            margin-bottom: 30px;
+        }
+        
+        .weather-input {
+            background: rgba(15, 20, 25, 0.7);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 8px;
+            color: #e8eef3;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            -moz-appearance: textfield; /* Firefox */
+        }
+        
+        /* Hide number input arrows */
+        .weather-input::-webkit-outer-spin-button,
+        .weather-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .weather-input:focus {
+            background: rgba(15, 20, 25, 0.9);
+            border-color: var(--soft-teal);
+            box-shadow: 0 0 12px rgba(94, 184, 184, 0.12);
+            color: #e8eef3;
+            outline: none;
+        }
+        
+        .weather-predict-btn {
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .weather-predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(94, 184, 184, 0.3);
+        }
+        
+        .selected-location {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(15, 20, 25, 0.5);
+            border-radius: 8px;
+            color: rgba(232, 238, 243, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .selected-location i {
+            color: var(--soft-teal);
+            margin-right: 8px;
+        }
+        
+        /* Loading */
+        .weather-loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(94, 184, 184, 0.2);
+            border-top: 4px solid var(--soft-teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Results */
+        .weather-results {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(15, 20, 25, 0.5);
+            border-radius: 12px;
+            border: 1.5px solid rgba(94, 184, 184, 0.15);
+        }
+        
+        .results-title {
+            font-family: var(--font-primary);
+            color: var(--soft-teal);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .weather-result-card {
+            background: rgba(26, 31, 38, 0.8);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .weather-result-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(94, 184, 184, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .temperature-card .result-icon {
+            color: #ff6b6b;
+        }
+        
+        .precipitation-card .result-icon {
+            color: #4ecdc4;
+        }
+        
+        .humidity-card .result-icon {
+            color: #45b7d1;
+        }
+        
+        .result-content h5 {
+            color: rgba(232, 238, 243, 0.9);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--soft-green);
+            margin: 0;
+            font-family: var(--font-primary);
+        }
+        
+        .result-unit {
+            font-size: 1.2rem;
+            color: rgba(232, 238, 243, 0.7);
+            margin-left: 5px;
+        }
+        
+        .prediction-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(94, 184, 184, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            color: rgba(232, 238, 243, 0.8);
+        }
+        
+        .prediction-info i {
+            color: var(--soft-teal);
+            margin-right: 8px;
+        }
+        
+        .prediction-info span {
+            color: var(--soft-green);
+            font-weight: 600;
+        }
+        
+        /* NDVI Specific Styles */
+        
+        .ndvi-value-card {
+            background: rgba(15, 20, 25, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1.5px solid rgba(94, 184, 184, 0.15);
+        }
+        
+        .ndvi-value-display {
+            margin-bottom: 20px;
+        }
+        
+        .ndvi-value {
+            font-size: 4rem;
+            font-weight: 700;
+            font-family: var(--font-primary);
+            color: var(--soft-green);
+            margin-bottom: 15px;
+        }
+        
+        .ndvi-health-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+        }
+        
+        .ndvi-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            color: rgba(232, 238, 243, 0.8);
+        }
+        
+        .trend-icon {
+            font-size: 1.5rem;
+        }
+        
+        .ndvi-forecast-section,
+        .ndvi-recommendations-section,
+        .ndvi-stats-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(15, 20, 25, 0.3);
+            border-radius: 10px;
+        }
+        
+        .forecast-title {
+            color: var(--soft-teal);
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .forecast-title i {
+            margin-right: 8px;
+        }
+        
+        .forecast-item {
+            background: rgba(26, 31, 38, 0.8);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .forecast-step {
+            font-size: 0.9rem;
+            color: var(--soft-teal);
+            margin-bottom: 10px;
+        }
+        
+        .forecast-ndvi {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: var(--font-primary);
+            margin-bottom: 10px;
+        }
+        
+        .forecast-health {
+            font-size: 0.9rem;
+            color: rgba(232, 238, 243, 0.7);
+        }
+        
+        .recommendation-item {
+            background: rgba(26, 31, 38, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid;
+        }
+        
+        .recommendation-item.high {
+            border-color: #E74C3C;
+        }
+        
+        .recommendation-item.medium {
+            border-color: #F39C12;
+        }
+        
+        .recommendation-item.low {
+            border-color: #6BBF59;
+        }
+        
+        .recommendation-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: rgba(232, 238, 243, 0.9);
+        }
+        
+        .recommendation-icon {
+            font-size: 1.3rem;
+        }
+        
+        .recommendation-description {
+            color: rgba(232, 238, 243, 0.7);
+            font-size: 0.9rem;
+            margin-left: 35px;
+        }
+        
+        .stat-card {
+            background: rgba(26, 31, 38, 0.8);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(232, 238, 243, 0.6);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: var(--font-primary);
+            color: var(--soft-green);
+        }
+        
+        /* AI Models Section Styles */
+        .ai-models-section {
+            background: rgba(26, 31, 38, 0.5);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1.5px solid rgba(94, 184, 184, 0.15);
+        }
+        
+        .section-title {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            color: var(--soft-green);
+            margin-bottom: 15px;
+        }
+        
+        .section-subtitle {
+            color: rgba(232, 238, 243, 0.7);
+            font-size: 1.05rem;
+        }
+        
+        .model-tabs {
+            border-bottom: 2px solid rgba(94, 184, 184, 0.2);
+            flex-wrap: wrap;
+        }
+        
+        .model-tabs .nav-link {
+            background: transparent;
+            border: none;
+            color: rgba(232, 238, 243, 0.6);
+            padding: 12px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px 8px 0 0;
+            margin: 0 5px;
+        }
+        
+        .model-tabs .nav-link:hover {
+            color: var(--soft-teal);
+            background: rgba(94, 184, 184, 0.1);
+        }
+        
+        .model-tabs .nav-link.active {
+            color: var(--soft-green);
+            background: rgba(107, 191, 89, 0.15);
+            border-bottom: 3px solid var(--soft-green);
+        }
+        
+        .model-tabs .nav-link i {
+            margin-right: 8px;
+        }
+        
+        .model-card {
+            background: rgba(15, 20, 25, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .model-description {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(94, 184, 184, 0.2);
+        }
+        
+        .model-description h4 {
+            color: var(--soft-teal);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .model-description p {
+            color: rgba(232, 238, 243, 0.7);
+            line-height: 1.6;
+        }
+        
+        .map-selector-info {
+            background: rgba(94, 184, 184, 0.1);
+            border-left: 3px solid var(--soft-teal);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: rgba(232, 238, 243, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .map-selector-info i {
+            color: var(--soft-teal);
+            margin-right: 8px;
+        }
+        
+        .model-form .form-label {
+            color: var(--soft-teal);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .model-input {
+            background: rgba(15, 20, 25, 0.7);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 8px;
+            color: #e8eef3;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+            -moz-appearance: textfield; /* Firefox */
+        }
+        
+        /* Hide number input arrows */
+        .model-input::-webkit-outer-spin-button,
+        .model-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .model-input:focus {
+            background: rgba(15, 20, 25, 0.9);
+            border-color: var(--soft-teal);
+            box-shadow: 0 0 12px rgba(94, 184, 184, 0.12);
+            color: #e8eef3;
+            outline: none;
+        }
+        
+        .model-predict-btn {
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            padding: 14px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .model-predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(94, 184, 184, 0.3);
+        }
+        
+        .model-loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .model-loading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(94, 184, 184, 0.2);
+            border-top: 4px solid var(--soft-teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        .model-results {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(26, 31, 38, 0.8);
+            border-radius: 12px;
+            border: 1.5px solid rgba(94, 184, 184, 0.15);
+        }
+        
+        .results-header h5 {
+            color: var(--soft-green);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .overall-risk {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .overall-risk.risk-low {
+            background: rgba(107, 191, 89, 0.2);
+            color: #6BBF59;
+        }
+        
+        .overall-risk.risk-medium {
+            background: rgba(243, 156, 18, 0.2);
+            color: #F39C12;
+        }
+        
+        .overall-risk.risk-high {
+            background: rgba(231, 76, 60, 0.2);
+            color: #E74C3C;
+        }
+        
+        .overall-risk.risk-severe {
+            background: rgba(192, 57, 43, 0.2);
+            color: #C0392B;
+        }
+        
+        .prediction-card {
+            background: rgba(15, 20, 25, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+        }
+        
+        .prediction-card h6 {
+            color: var(--soft-teal);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .prediction-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--soft-green);
+            font-family: var(--font-primary);
+            margin: 10px 0;
+        }
+        
+        .risk-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .risk-badge.risk-low {
+            background: rgba(107, 191, 89, 0.2);
+            color: #6BBF59;
+        }
+        
+        .risk-badge.risk-medium {
+            background: rgba(243, 156, 18, 0.2);
+            color: #F39C12;
+        }
+        
+        .risk-badge.risk-high {
+            background: rgba(231, 76, 60, 0.2);
+            color: #E74C3C;
+        }
+        
+        .recommendations-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(15, 20, 25, 0.4);
+            border-radius: 10px;
+        }
+        
+        .recommendations-section h6 {
+            color: var(--soft-teal);
+            margin-bottom: 15px;
+        }
+        
+        .recommendations-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .recommendations-list li {
+            padding: 10px 0;
+            color: rgba(232, 238, 243, 0.8);
+            border-bottom: 1px solid rgba(94, 184, 184, 0.1);
+        }
+        
+        .recommendations-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .recommendations-list li i {
+            color: var(--soft-green);
+            margin-right: 10px;
+        }
+        
+        .climate-forecast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .forecast-day-card {
+            background: rgba(15, 20, 25, 0.6);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+        }
+        
+        .day-label {
+            color: var(--soft-teal);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .forecast-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 8px 0;
+            color: rgba(232, 238, 243, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .forecast-item i {
+            color: var(--soft-green);
+        }
+        
+        .heatmap-preview {
+            background: rgba(15, 20, 25, 0.6);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            border: 2px dashed rgba(94, 184, 184, 0.3);
+            margin-top: 20px;
+        }
+        
+        .heatmap-legend {
+            background: rgba(15, 20, 25, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+        }
+        
+        .heatmap-legend h6 {
+            color: var(--soft-teal);
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .legend-scale {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .legend-label {
+            color: rgba(232, 238, 243, 0.8);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .legend-gradient {
+            flex: 1;
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, 
+                #4A90E2 0%, 
+                #5eb8b8 25%, 
+                #6BBF59 50%, 
+                #F39C12 75%, 
+                #E74C3C 100%);
+            border: 1px solid rgba(94, 184, 184, 0.3);
+        }
+        
+        #heatmapContainer {
+            position: relative;
+        }
+        
+        #heatmapContainer .leaflet-container {
+            background: #0a0a0a;
+        }
+        
+        @media (max-width: 768px) {
+            #map {
+                height: 400px;
+            }
+            
+            .control-panel {
+                padding: 20px;
+            }
+            
+            .info-card {
+                padding: 18px;
+            }
+            
+            .weather-forecast-section {
+                padding: 20px;
+            }
+            
+            .weather-result-card {
+                margin-bottom: 15px;
+            }
+            
+            .ndvi-value {
+                font-size: 3rem;
+            }
+            
+            .ai-models-section {
+                padding: 20px;
+            }
+            
+            .model-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .model-card {
+                padding: 20px;
+            }
+            
+            .climate-forecast-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+        
+        /* User Guide Cards Styles */
+        .user-guide-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .guide-card {
+            background: rgba(26, 31, 38, 0.9);
+            border: 1.5px solid rgba(94, 184, 184, 0.18);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .guide-card:hover {
+            border-color: rgba(94, 184, 184, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .guide-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .guide-card:hover::before {
+            opacity: 1;
+        }
+        
+        .guide-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #000;
+            box-shadow: 0 5px 20px rgba(94, 184, 184, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .guide-card:hover .guide-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 30px rgba(94, 184, 184, 0.5);
+        }
+        
+        .guide-title {
+            font-family: var(--font-primary);
+            font-size: 1.3rem;
+            color: var(--soft-green);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .guide-description {
+            color: rgba(232, 238, 243, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .guide-expand-icon {
+            color: var(--soft-teal);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .guide-card[aria-expanded="true"] .guide-expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .guide-content {
+            margin-top: 20px;
+        }
+        
+        .guide-details {
+            background: rgba(15, 20, 25, 0.7);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: left;
+        }
+        
+        .guide-details h4 {
+            font-family: var(--font-primary);
+            color: var(--soft-teal);
+            font-size: 1.1rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .guide-details h4:first-child {
+            margin-top: 0;
+        }
+        
+        .guide-details h4 i {
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+        
+        .guide-details p {
+            color: rgba(232, 238, 243, 0.8);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .guide-details ol,
+        .guide-details ul {
+            color: rgba(232, 238, 243, 0.8);
+            line-height: 1.8;
+            padding-left: 25px;
+        }
+        
+        .guide-details ol li,
+        .guide-details ul li {
+            margin-bottom: 10px;
+        }
+        
+        .guide-details strong {
+            color: var(--soft-green);
+            font-weight: 600;
+        }
+        
+        .guide-cta {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(94, 184, 184, 0.2);
+            text-align: center;
+        }
+        
+        .btn-guide-action {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-guide-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(94, 184, 184, 0.4);
+            color: #000;
+        }
+        
+        .btn-guide-action i {
+            margin-right: 8px;
+        }
+        
+        /* Get Report Button & Modal Styles */
+        .btn-get-report {
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            padding: 18px 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 25px rgba(94, 184, 184, 0.3);
+            cursor: pointer;
+        }
+        
+        .btn-get-report:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(94, 184, 184, 0.5);
+        }
+        
+        .btn-get-report i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .report-modal-content {
+            background: rgba(26, 31, 38, 0.98);
+            border: 2px solid rgba(94, 184, 184, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .report-modal-header {
+            border-bottom: 2px solid rgba(94, 184, 184, 0.3);
+            padding: 20px 30px;
+        }
+        
+        .report-modal-header .modal-title {
+            font-family: var(--font-primary);
+            color: var(--soft-green);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .report-modal-header .modal-title i {
+            margin-right: 10px;
+            color: var(--soft-teal);
+        }
+        
+        .report-modal-body {
+            padding: 30px;
+        }
+        
+        .report-label {
+            color: var(--soft-teal);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .report-label i {
+            margin-right: 8px;
+        }
+        
+        .report-input {
+            background: rgba(15, 20, 25, 0.7);
+            border: 1.5px solid rgba(94, 184, 184, 0.2);
+            border-radius: 8px;
+            color: #e8eef3;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .report-input:focus {
+            background: rgba(15, 20, 25, 0.9);
+            border-color: var(--soft-teal);
+            box-shadow: 0 0 12px rgba(94, 184, 184, 0.2);
+            color: #e8eef3;
+            outline: none;
+        }
+        
+        .model-checkboxes {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .report-checkbox {
+            background: rgba(15, 20, 25, 0.5);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(94, 184, 184, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .report-checkbox:hover {
+            background: rgba(15, 20, 25, 0.7);
+            border-color: rgba(94, 184, 184, 0.4);
+        }
+        
+        .report-checkbox .form-check-input {
+            background-color: rgba(15, 20, 25, 0.7);
+            border: 2px solid rgba(94, 184, 184, 0.3);
+            width: 20px;
+            height: 20px;
+        }
+        
+        .report-checkbox .form-check-input:checked {
+            background-color: var(--soft-green);
+            border-color: var(--soft-green);
+        }
+        
+        .report-checkbox .form-check-label {
+            color: rgba(232, 238, 243, 0.9);
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .report-checkbox .form-check-label i {
+            margin-right: 8px;
+            color: var(--soft-teal);
+        }
+        
+        .report-summary {
+            background: rgba(94, 184, 184, 0.1);
+            border-left: 4px solid var(--soft-teal);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .report-summary h6 {
+            color: var(--soft-teal);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .report-summary p {
+            color: rgba(232, 238, 243, 0.8);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        
+        .report-generating {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .report-generating .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(94, 184, 184, 0.2);
+            border-top: 5px solid var(--soft-teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        .report-generating p {
+            color: var(--soft-green);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .report-modal-footer {
+            border-top: 2px solid rgba(94, 184, 184, 0.3);
+            padding: 20px 30px;
+        }
+        
+        .btn-generate-report {
+            background: linear-gradient(135deg, var(--soft-teal), var(--soft-green));
+            border: none;
+            color: #000;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-generate-report:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(94, 184, 184, 0.4);
+        }
+        
+        /* ===== ADDITIONAL RESPONSIVE IMPROVEMENTS ===== */
+        
+        /* Mobile optimizations */
+        @media (max-width: 767.98px) {
+            /* Reduce padding on mobile */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Stack navigation tabs vertically */
+            .model-tabs {
+                flex-direction: column;
+            }
+            
+            .model-tabs .nav-link {
+                width: 100%;
+                text-align: center;
+                margin: 5px 0;
+            }
+            
+            /* Optimize form layouts */
+            .row.g-3 > *,
+            .row.g-4 > * {
+                margin-bottom: 1rem;
+            }
+            
+            /* Smaller charts on mobile */
+            canvas {
+                max-height: 250px !important;
+            }
+            
+            /* Compact stat cards */
+            .stat-card,
+            .forecast-item,
+            .prediction-card {
+                padding: 1rem !important;
+            }
+            
+            /* Reduce font sizes slightly */
+            .tech-title {
+                font-size: 1.75rem !important;
+            }
+            
+            .section-title {
+                font-size: 1.5rem !important;
+            }
+            
+            /* Optimize button sizes */
+            .weather-predict-btn,
+            .model-predict-btn,
+            .generate-report-btn {
+                width: 100%;
+                padding: 1rem !important;
+                font-size: 0.95rem !important;
+            }
+            
+            /* Better spacing for guide cards */
+            .guide-card {
+                margin-bottom: 1rem;
+            }
+            
+            /* Optimize result cards */
+            .weather-result-card,
+            .prediction-card {
+                margin-bottom: 1rem;
+            }
+            
+            .result-value {
+                font-size: 2rem !important;
+            }
+        }
+        
+        /* Tablet optimizations */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .container {
+                max-width: 720px;
+            }
+            
+            /* Two column layout for cards */
+            .col-md-4 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            
+            canvas {
+                max-height: 300px !important;
+            }
+        }
+        
+        /* Landscape mobile optimization */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .tech-page-header,
+            .map-section,
+            section {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+            
+            #map {
+                height: 300px !important;
+            }
+            
+            .weather-forecast-section,
+            .ai-models-section {
+                padding: 1.5rem !important;
+            }
+        }
+        
+        /* High DPI screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            /* Optimize for retina displays */
+            .tech-title,
+            .section-title {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+        
+        /* No custom footer styles - use styles.css */
+        
+        /* Print optimization */
+        @media print {
+            .futuristic-nav,
+            .background-effects,
+            .floating-grid,
+            button,
+            .btn {
+                display: none !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+            }
+            
+            * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-leaf loading-icon"></i>
+                <span class="loading-text-logo">Green Vision</span>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-text">Loading Technology Map...</div>
+            <div class="loading-percentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Navigation (Same as main site) -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top futuristic-nav">
+            <div class="container">
+                <a class="navbar-brand futuristic-logo" href="{% url 'home' %}">
+                    <div class="logo-container">
+                        <div class="logo-bg-effect"></div>
+                        <i class="fas fa-leaf glow-icon"></i>
+                        <span class="logo-text">Green Vision</span>
+                    </div>
+                </a>
+                
+                <button 
+                    class="navbar-toggler futuristic-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation menu"
+                >
+                    <span class="toggler-line line-1"></span>
+                    <span class="toggler-line line-2"></span>
+                    <span class="toggler-line line-3"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto nav-menu" role="menubar">
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link" href="{% url 'home' %}#home" role="menuitem">
+                                <span class="link-text">Home</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link" href="{% url 'home' %}#features" role="menuitem">
+                                <span class="link-text">Features</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link" href="{% url 'home' %}#about" role="menuitem">
+                                <span class="link-text">About</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link active" href="{% url 'technology' %}" role="menuitem">
+                                <span class="link-text">Solution</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item nav-cta" role="none">
+                            <a class="nav-link cta-link" href="{% url 'home' %}#features" role="menuitem">
+                                <span class="cta-text">Get Started</span>
+                                <span class="cta-bg"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-progress-bar"></div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Page Header -->
+        <section class="tech-page-header">
+            <!-- Background Effects - Same as Hero Section -->
+            <div class="background-effects" aria-hidden="true">
+                <div class="floating-grid"></div>
+                <div class="floating-particles"></div>
+                <div class="animated-lines"></div>
+            </div>
+        </section>
+
+        <!-- User Guide Cards Section -->
+        <section class="user-guide-section" style="padding: 60px 0; background: #000000;">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title" style="font-family: var(--font-primary); font-size: 2rem; color: var(--soft-green); margin-bottom: 15px;">
+                        <i class="fas fa-book-open"></i> How to Use Our AI Features
+                    </h2>
+                    <p class="section-subtitle" style="color: rgba(232, 238, 243, 0.7); font-size: 1.05rem;">
+                        Click on any card to learn how to use each feature
+                    </p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Weather Forecast Guide Card -->
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="guide-card" data-bs-toggle="collapse" data-bs-target="#weatherGuide" style="cursor: pointer;">
+                            <div class="guide-icon">
+                                <i class="fas fa-cloud-sun"></i>
+                            </div>
+                            <h3 class="guide-title">Weather Forecast Prediction</h3>
+                            <p class="guide-description">Learn how to predict weather conditions for any location</p>
+                            <div class="guide-expand-icon">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="collapse guide-content" id="weatherGuide">
+                            <div class="guide-details">
+                                <h4><i class="fas fa-info-circle"></i> What is it?</h4>
+                                <p>AI-powered weather prediction system that forecasts temperature, precipitation, and humidity for any location worldwide.</p>
+                                
+                                <h4><i class="fas fa-list-ol"></i> How to Use:</h4>
+                                <ol>
+                                    <li><strong>Select Date:</strong> Choose the day, month, and year you want to predict</li>
+                                    <li><strong>Choose Location:</strong> Either click on the map or enter coordinates manually</li>
+                                    <li><strong>Click Predict:</strong> Press the "Predict Weather" button</li>
+                                    <li><strong>View Results:</strong> See temperature (°C), precipitation (mm), and humidity (%)</li>
+                                </ol>
+                                
+                                <h4><i class="fas fa-lightbulb"></i> Tips:</h4>
+                                <ul>
+                                    <li>Use the interactive map to select your location accurately</li>
+                                    <li>Predictions work best for dates within the next 30 days</li>
+                                    <li>Compare multiple locations to plan agricultural activities</li>
+                                </ul>
+                                
+                                <div class="guide-cta">
+                                    <a href="#weather-forecast-section" class="btn-guide-action smooth-scroll">
+                                        <i class="fas fa-arrow-right"></i> Try Weather Forecast
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NDVI Guide Card -->
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="guide-card" data-bs-toggle="collapse" data-bs-target="#ndviGuide" style="cursor: pointer;">
+                            <div class="guide-icon" style="background: linear-gradient(135deg, #6BBF59, #4dd084);">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h3 class="guide-title">NDVI Vegetation Health Analysis</h3>
+                            <p class="guide-description">Monitor crop health and vegetation status in real-time</p>
+                            <div class="guide-expand-icon">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="collapse guide-content" id="ndviGuide">
+                            <div class="guide-details">
+                                <h4><i class="fas fa-info-circle"></i> What is NDVI?</h4>
+                                <p>Normalized Difference Vegetation Index (NDVI) measures plant health using satellite imagery. Values range from -1 to +1, where higher values indicate healthier vegetation.</p>
+                                
+                                <h4><i class="fas fa-list-ol"></i> How to Use:</h4>
+                                <ol>
+                                    <li><strong>Select Location:</strong> Click on the map to choose your farm or field</li>
+                                    <li><strong>Upload Image (Optional):</strong> Upload satellite or drone imagery for analysis</li>
+                                    <li><strong>Analyze:</strong> Click "Analyze NDVI" to process the data</li>
+                                    <li><strong>Review Results:</strong> Check vegetation health status, trends, and recommendations</li>
+                                </ol>
+                                
+                                <h4><i class="fas fa-chart-line"></i> Understanding Results:</h4>
+                                <ul>
+                                    <li><strong>0.6 - 1.0:</strong> Excellent health (dense, healthy vegetation)</li>
+                                    <li><strong>0.4 - 0.6:</strong> Good health (moderate vegetation)</li>
+                                    <li><strong>0.2 - 0.4:</strong> Fair health (sparse vegetation)</li>
+                                    <li><strong>Below 0.2:</strong> Poor health (stressed or no vegetation)</li>
+                                </ul>
+                                
+                                <h4><i class="fas fa-lightbulb"></i> Tips:</h4>
+                                <ul>
+                                    <li>Monitor NDVI regularly to detect early signs of crop stress</li>
+                                    <li>Compare values across different areas of your field</li>
+                                    <li>Use forecasts to plan irrigation and fertilization</li>
+                                </ul>
+                                
+                                <div class="guide-cta">
+                                    <a href="#ndvi-section" class="btn-guide-action smooth-scroll">
+                                        <i class="fas fa-arrow-right"></i> Try NDVI Analysis
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drought Prediction Guide Card -->
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="guide-card" data-bs-toggle="collapse" data-bs-target="#droughtGuide" style="cursor: pointer;">
+                            <div class="guide-icon" style="background: linear-gradient(135deg, #F39C12, #E74C3C);">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <h3 class="guide-title">Drought Prediction Model</h3>
+                            <p class="guide-description">Assess drought risk levels for better water management</p>
+                            <div class="guide-expand-icon">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="collapse guide-content" id="droughtGuide">
+                            <div class="guide-details">
+                                <h4><i class="fas fa-info-circle"></i> What is it?</h4>
+                                <p>Advanced AI model that predicts drought severity levels (D0-D4) based on location, date, and climate patterns to help you plan water resources.</p>
+                                
+                                <h4><i class="fas fa-list-ol"></i> How to Use:</h4>
+                                <ol>
+                                    <li><strong>Select Location:</strong> Click on the map or enter coordinates</li>
+                                    <li><strong>Choose Date:</strong> Select the date for drought prediction</li>
+                                    <li><strong>Predict:</strong> Click "Predict Drought Risk"</li>
+                                    <li><strong>Review Analysis:</strong> Check risk level and follow recommendations</li>
+                                </ol>
+                                
+                                <h4><i class="fas fa-exclamation-triangle"></i> Drought Levels:</h4>
+                                <ul>
+                                    <li><strong>D0 - Abnormally Dry:</strong> Minor impacts, monitor conditions</li>
+                                    <li><strong>D1 - Moderate Drought:</strong> Some crop stress, plan irrigation</li>
+                                    <li><strong>D2 - Severe Drought:</strong> Significant impacts, conserve water</li>
+                                    <li><strong>D3 - Extreme Drought:</strong> Major crop losses, emergency measures</li>
+                                    <li><strong>D4 - Exceptional Drought:</strong> Widespread losses, critical situation</li>
+                                </ul>
+                                
+                                <h4><i class="fas fa-lightbulb"></i> Tips:</h4>
+                                <ul>
+                                    <li>Check predictions regularly during dry seasons</li>
+                                    <li>Plan irrigation schedules based on risk levels</li>
+                                    <li>Follow AI recommendations for water conservation</li>
+                                    <li>Compare historical data to identify patterns</li>
+                                </ul>
+                                
+                                <div class="guide-cta">
+                                    <a href="#drought-model" class="btn-guide-action smooth-scroll">
+                                        <i class="fas fa-arrow-right"></i> Try Drought Prediction
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NDVI & Drought Analysis Section -->
+        <section style="padding: 80px 0; background: #000000;">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 style="font-family: var(--font-primary); font-size: 2.5rem; color: var(--soft-green); margin-bottom: 15px;">
+                        <i class="fas fa-chart-line"></i> NDVI & Drought Analysis
+                    </h2>
+                    <p style="color: rgba(232, 238, 243, 0.7); font-size: 1.1rem;">
+                        Comprehensive visualization and analysis of drought patterns and vegetation health
+                    </p>
+                </div>
+                
+                <!-- Chart.js CDN -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+                
+                <!-- Stats Cards -->
+                <div class="row g-3 mb-5 justify-content-center" data-aos="fade-up">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 12px; padding: 25px 20px; text-align: center; transition: all 0.3s; height: 100%;">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">📊</div>
+                            <div style="font-size: 0.85rem; color: rgba(232, 238, 243, 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Total Models</div>
+                            <div style="font-size: 2.2rem; font-weight: 700; color: var(--soft-green); font-family: var(--font-primary);">5</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 12px; padding: 25px 20px; text-align: center; transition: all 0.3s; height: 100%;">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">🎯</div>
+                            <div style="font-size: 0.85rem; color: rgba(232, 238, 243, 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Accuracy</div>
+                            <div style="font-size: 2.2rem; font-weight: 700; color: var(--soft-green); font-family: var(--font-primary);">94%</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 12px; padding: 25px 20px; text-align: center; transition: all 0.3s; height: 100%;">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">📈</div>
+                            <div style="font-size: 0.85rem; color: rgba(232, 238, 243, 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Data Points</div>
+                            <div style="font-size: 2.2rem; font-weight: 700; color: var(--soft-green); font-family: var(--font-primary);">10K+</div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 12px; padding: 25px 20px; text-align: center; transition: all 0.3s; height: 100%;">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">⏱️</div>
+                            <div style="font-size: 0.85rem; color: rgba(232, 238, 243, 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Analysis Time</div>
+                            <div style="font-size: 2.2rem; font-weight: 700; color: var(--soft-green); font-family: var(--font-primary);">2.5s</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Grid -->
+                <div class="row g-4" style="display: flex !important; flex-wrap: wrap !important; margin: 0 -0.75rem;">
+                    <!-- Row 1: Drought Severity & Seasonal Patterns -->
+                    <div class="col-lg-6 col-md-6 col-sm-12" data-aos="fade-up" style="display: flex !important; flex: 0 0 50% !important; max-width: 50% !important; padding: 0 0.75rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 15px; padding: 30px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); width: 100%; height: 100%;">
+                            <h5 style="color: var(--soft-green); margin-bottom: 25px; font-family: var(--font-primary); font-size: 1.5rem;">
+                                <i class="fas fa-chart-line"></i> Drought Severity Trends
+                            </h5>
+                            <div style="position: relative; height: 350px;">
+                                <canvas id="mainDroughtTimeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="100" style="display: flex !important; flex: 0 0 50% !important; max-width: 50% !important; padding: 0 0.75rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 15px; padding: 30px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); width: 100%; height: 100%;">
+                            <h5 style="color: var(--soft-green); margin-bottom: 25px; font-family: var(--font-primary); font-size: 1.5rem;">
+                                <i class="fas fa-sync-alt"></i> Seasonal Patterns
+                            </h5>
+                            <div style="position: relative; height: 350px;">
+                                <canvas id="mainSeasonalChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: Model Performance & Feature Importance -->
+                    <div class="col-lg-6 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="200" style="display: flex !important; flex: 0 0 50% !important; max-width: 50% !important; padding: 0 0.75rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 15px; padding: 30px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); width: 100%; height: 100%;">
+                            <h5 style="color: var(--soft-green); margin-bottom: 25px; font-family: var(--font-primary); font-size: 1.5rem;">
+                                <i class="fas fa-trophy"></i> Model Performance
+                            </h5>
+                            <div style="position: relative; height: 350px;">
+                                <canvas id="mainModelComparisonChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="300" style="display: flex !important; flex: 0 0 50% !important; max-width: 50% !important; padding: 0 0.75rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(26, 31, 38, 0.8); border: 2px solid rgba(94, 184, 184, 0.2); border-radius: 15px; padding: 30px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); width: 100%; height: 100%;">
+                            <h5 style="color: var(--soft-green); margin-bottom: 25px; font-family: var(--font-primary); font-size: 1.5rem;">
+                                <i class="fas fa-star"></i> Feature Importance
+                            </h5>
+                            <div style="position: relative; height: 350px;">
+                                <canvas id="mainFeatureImportanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+            <!-- Background Effects -->
+            <div class="background-effects" aria-hidden="true">
+                <div class="floating-grid"></div>
+            </div>
+            <div class="container">
+                <!-- Map Title -->
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h1 class="tech-title">Interactive Technology Map</h1>
+                    <p class="tech-subtitle">Explore our global agriculture monitoring system powered by satellite data and AI analytics</p>
+                </div>
+                
+                <!-- Control Panel -->
+                <div class="control-panel" data-aos="fade-up">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label for="countrySelect" class="form-label">
+                                <i class="fas fa-globe"></i> Select Country
+                            </label>
+                            <select id="countrySelect" class="form-select">
+                                <option value="">Choose a country...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="citySelect" class="form-label">
+                                <i class="fas fa-city"></i> Select City
+                            </label>
+                            <select id="citySelect" class="form-select" disabled>
+                                <option value="">First select a country...</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Container -->
+                <div id="map" data-aos="fade-up" data-aos-delay="100"></div>
+
+                <!-- Weather Forecast Section -->
+                <div id="weather-forecast-section" class="weather-forecast-section" data-aos="fade-up" data-aos-delay="150">
+                    <h3 class="weather-title"><i class="fas fa-cloud-sun"></i> Weather Forecast Prediction</h3>
+                    <p class="weather-subtitle">Click on the map to select a location, then enter a date to predict weather conditions</p>
+                    
+                    <div class="weather-form-container">
+                        <form id="weatherForm" class="weather-form">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="dayInput" class="form-label">
+                                        <i class="fas fa-calendar-day"></i> Day
+                                    </label>
+                                    <input type="number" class="form-control weather-input" id="dayInput" 
+                                           min="1" max="31" placeholder="1-31" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="monthInput" class="form-label">
+                                        <i class="fas fa-calendar-alt"></i> Month
+                                    </label>
+                                    <input type="number" class="form-control weather-input" id="monthInput" 
+                                           min="1" max="12" placeholder="1-12" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="yearInput" class="form-label">
+                                        <i class="fas fa-calendar"></i> Year
+                                    </label>
+                                    <input type="number" class="form-control weather-input" id="yearInput" 
+                                           min="2024" max="2100" placeholder="2024" required>
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button type="submit" class="btn weather-predict-btn w-100">
+                                        <i class="fas fa-brain"></i> Predict Weather
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="selected-location" id="selectedLocation">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Click on the map to select a location</span>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Loading Indicator -->
+                    <div id="weatherLoading" class="weather-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Analyzing weather patterns...</p>
+                    </div>
+                    
+                    <!-- Results Container -->
+                    <div id="weatherResults" class="weather-results" style="display: none;">
+                        <h4 class="results-title">Weather Prediction Results</h4>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="weather-result-card temperature-card">
+                                    <div class="result-icon">
+                                        <i class="fas fa-temperature-high"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <h5>Temperature</h5>
+                                        <p class="result-value" id="tempValue">--</p>
+                                        <span class="result-unit">°C</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="weather-result-card precipitation-card">
+                                    <div class="result-icon">
+                                        <i class="fas fa-cloud-rain"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <h5>Precipitation</h5>
+                                        <p class="result-value" id="precipValue">--</p>
+                                        <span class="result-unit">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="weather-result-card humidity-card">
+                                    <div class="result-icon">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <h5>Humidity</h5>
+                                        <p class="result-value" id="humidityValue">--</p>
+                                        <span class="result-unit">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="prediction-info">
+                            <p><i class="fas fa-info-circle"></i> Prediction for <span id="predictionDate"></span> at <span id="predictionLocation"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NDVI Analysis Section -->
+                <div id="ndvi-section" class="weather-forecast-section" data-aos="fade-up" data-aos-delay="200" style="margin-top: 40px;">
+                    <h3 class="weather-title"><i class="fas fa-leaf"></i> NDVI Vegetation Health Analysis</h3>
+                    <p class="weather-subtitle">Monitor vegetation health using satellite-derived NDVI data. Click on the map to analyze any location.</p>
+                    
+                    <div class="weather-form-container">
+                        <form id="ndviForm" class="weather-form">
+                            <div class="selected-location" id="ndviSelectedLocation" style="margin-bottom: 20px;">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Click on the map to select a location</span>
+                            </div>
+                            
+                            <button type="submit" class="btn weather-predict-btn w-100">
+                                <i class="fas fa-seedling"></i> Analyze Vegetation Health
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Loading Indicator -->
+                    <div id="ndviLoading" class="weather-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Analyzing vegetation health...</p>
+                    </div>
+                    
+                    <!-- Results Container -->
+                    <div id="ndviResults" class="weather-results" style="display: none;">
+                        <h4 class="results-title">NDVI Analysis Results</h4>
+                        
+                        <!-- Current NDVI Value -->
+                        <div class="ndvi-value-card">
+                            <div class="ndvi-value-display">
+                                <div class="ndvi-value" id="ndviValue">--</div>
+                                <div class="ndvi-health-badge" id="ndviHealthBadge">--</div>
+                            </div>
+                            <div class="ndvi-trend" id="ndviTrend">
+                                <span class="trend-icon">📈</span>
+                                <span class="trend-text">Trend: --</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Forecast -->
+                        <div class="ndvi-forecast-section">
+                            <h5 class="forecast-title"><i class="fas fa-crystal-ball"></i> 3-Step Forecast</h5>
+                            <div class="row g-3" id="ndviForecast">
+                                <!-- Forecast items will be inserted here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Recommendations -->
+                        <div class="ndvi-recommendations-section">
+                            <h5 class="forecast-title"><i class="fas fa-lightbulb"></i> Recommendations</h5>
+                            <div id="ndviRecommendations">
+                                <!-- Recommendations will be inserted here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Statistics -->
+                        <div class="ndvi-stats-section">
+                            <h5 class="forecast-title"><i class="fas fa-chart-bar"></i> Historical Statistics</h5>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <div class="stat-label">Mean NDVI</div>
+                                        <div class="stat-value" id="ndviMean">--</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <div class="stat-label">Std Deviation</div>
+                                        <div class="stat-value" id="ndviStd">--</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <div class="stat-label">Confidence</div>
+                                        <div class="stat-value" id="ndviConfidence">--</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <div class="stat-label">Data Points</div>
+                                        <div class="stat-value" id="ndviDataPoints">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Models Section -->
+                <div class="ai-models-section" data-aos="fade-up" data-aos-delay="250" style="margin-top: 60px;">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="fas fa-brain"></i> AI Models Hub
+                        </h2>
+                        <p class="section-subtitle">
+                            Explore our suite of 4 AI-powered prediction models for agriculture and climate analysis
+                        </p>
+                    </div>
+
+                    <!-- Model Tabs -->
+                    <ul class="nav nav-pills model-tabs justify-content-center mb-4" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="drought-tab" data-bs-toggle="pill" data-bs-target="#drought-model" type="button" role="tab">
+                                <i class="fas fa-sun"></i> Drought
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="climate-tab" data-bs-toggle="pill" data-bs-target="#climate-model" type="button" role="tab">
+                                <i class="fas fa-cloud-sun-rain"></i> Climate
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="heatmap-tab" data-bs-toggle="pill" data-bs-target="#heatmap-model" type="button" role="tab">
+                                <i class="fas fa-fire"></i> Heatmap
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="recommendations-tab" data-bs-toggle="pill" data-bs-target="#recommendations-model" type="button" role="tab">
+                                <i class="fas fa-lightbulb"></i> Recommendations
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content model-tab-content">
+                        <!-- Drought Model -->
+                        <div class="tab-pane fade show active" id="drought-model" role="tabpanel">
+                            <div class="model-card">
+                                <div class="model-description">
+                                    <h4><i class="fas fa-sun"></i> Drought Prediction Model</h4>
+                                    <p>Predict drought risk levels (D0-D4) using advanced machine learning. Our model analyzes location, date, and climate data to assess drought probability and provide actionable recommendations.</p>
+                                </div>
+                                
+                                <div class="map-selector-info">
+                                    <i class="fas fa-info-circle"></i> Click on the map above to select location
+                                </div>
+                                
+                                <form id="droughtForm" class="model-form">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Latitude</label>
+                                            <input type="number" class="form-control model-input" id="drought-lat" step="0.0001" readonly required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Longitude</label>
+                                            <input type="number" class="form-control model-input" id="drought-lon" step="0.0001" readonly required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label"><i class="fas fa-calendar"></i> Date</label>
+                                            <input type="date" class="form-control model-input" id="drought-date" required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn model-predict-btn w-100">
+                                                <i class="fas fa-brain"></i> Predict Drought Risk
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                                <div id="droughtLoading" class="model-loading" style="display: none;">
+                                    <div class="spinner"></div>
+                                    <p>Analyzing drought risk...</p>
+                                </div>
+                                
+                                <div id="droughtResults" class="model-results" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Climate Model -->
+                        <div class="tab-pane fade" id="climate-model" role="tabpanel">
+                            <div class="model-card">
+                                <div class="model-description">
+                                    <h4><i class="fas fa-cloud-sun-rain"></i> Climate Forecast Model</h4>
+                                    <p>Get detailed climate forecasts for any location. Predict temperature, precipitation, and humidity patterns for up to 30 days ahead to plan your agricultural activities effectively.</p>
+                                </div>
+                                
+                                <div class="map-selector-info">
+                                    <i class="fas fa-info-circle"></i> Click on the map above to select location
+                                </div>
+                                
+                                <form id="climateForm" class="model-form">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Latitude</label>
+                                            <input type="number" class="form-control model-input" id="climate-lat" step="0.0001" readonly required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Longitude</label>
+                                            <input type="number" class="form-control model-input" id="climate-lon" step="0.0001" readonly required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label"><i class="fas fa-calendar-alt"></i> Forecast Days</label>
+                                            <input type="number" class="form-control model-input" id="climate-range" min="1" max="30" value="7" required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn model-predict-btn w-100">
+                                                <i class="fas fa-cloud"></i> Generate Climate Forecast
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                                <div id="climateLoading" class="model-loading" style="display: none;">
+                                    <div class="spinner"></div>
+                                    <p>Generating climate forecast...</p>
+                                </div>
+                                
+                                <div id="climateResults" class="model-results" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Heatmap Model -->
+                        <div class="tab-pane fade" id="heatmap-model" role="tabpanel">
+                            <div class="model-card">
+                                <div class="model-description">
+                                    <h4><i class="fas fa-fire"></i> Regional Heatmap Generator</h4>
+                                    <p>Generate comprehensive heatmaps for any region. Visualize agricultural metrics, climate patterns, and environmental data across geographical areas for better decision-making.</p>
+                                </div>
+                                
+                                <div class="map-selector-info">
+                                    <i class="fas fa-info-circle"></i> Click on the map above to select location (or enter city name)
+                                </div>
+                                
+                                <form id="heatmapForm" class="model-form">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-city"></i> City (Optional)</label>
+                                            <input type="text" class="form-control model-input" id="heatmap-city" placeholder="e.g., Cairo">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-calendar"></i> Year</label>
+                                            <input type="number" class="form-control model-input" id="heatmap-year" min="2020" max="2030" value="2024" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Latitude</label>
+                                            <input type="number" class="form-control model-input" id="heatmap-lat" step="0.0001" readonly>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Longitude</label>
+                                            <input type="number" class="form-control model-input" id="heatmap-lon" step="0.0001" readonly>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn model-predict-btn w-100">
+                                                <i class="fas fa-map"></i> Generate Heatmap
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                                <div id="heatmapLoading" class="model-loading" style="display: none;">
+                                    <div class="spinner"></div>
+                                    <p>Generating heatmap...</p>
+                                </div>
+                                
+                                <div id="heatmapResults" class="model-results" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations Model -->
+                        <div class="tab-pane fade" id="recommendations-model" role="tabpanel">
+                            <div class="model-card">
+                                <div class="model-description">
+                                    <h4><i class="fas fa-lightbulb"></i> Smart Recommendations Engine</h4>
+                                    <p>Get AI-powered agricultural recommendations tailored to your location and needs. Choose your use case and timeframe to receive expert guidance for optimal farming practices.</p>
+                                </div>
+                                
+                                <div class="map-selector-info">
+                                    <i class="fas fa-info-circle"></i> Click on the map above to select location
+                                </div>
+                                
+                                <form id="recommendationsForm" class="model-form">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Latitude</label>
+                                            <input type="number" class="form-control model-input" id="rec-lat" step="0.0001" readonly required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Longitude</label>
+                                            <input type="number" class="form-control model-input" id="rec-lon" step="0.0001" readonly required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-seedling"></i> Use Case</label>
+                                            <select class="form-select model-input" id="rec-usecase" required>
+                                                <option value="crop_selection">Crop Selection</option>
+                                                <option value="irrigation">Irrigation Planning</option>
+                                                <option value="fertilization">Fertilization Strategy</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label"><i class="fas fa-clock"></i> Timeframe</label>
+                                            <select class="form-select model-input" id="rec-timeframe" required>
+                                                <option value="short_term">Short Term (1-3 months)</option>
+                                                <option value="medium_term">Medium Term (3-6 months)</option>
+                                                <option value="long_term">Long Term (6+ months)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn model-predict-btn w-100">
+                                                <i class="fas fa-magic"></i> Get Recommendations
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                                <div id="recommendationsLoading" class="model-loading" style="display: none;">
+                                    <div class="spinner"></div>
+                                    <p>Generating recommendations...</p>
+                                </div>
+                                
+                                <div id="recommendationsResults" class="model-results" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+
+            </div>
+        </section>
+            <!-- Get Report Button Section -->
+            <div class="text-center" style="margin: 60px 0 40px 0;" data-aos="fade-up">
+                <button id="getReportBtn" class="btn-get-report">
+                    <i class="fas fa-file-pdf"></i> Generate PDF Report
+                </button>
+                <p style="color: rgba(232, 238, 243, 0.6); margin-top: 15px; font-size: 0.9rem;">
+                    Export all AI model results into a professional PDF report
+                </p>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Get Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content report-modal-content">
+                <div class="modal-header report-modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">
+                        <i class="fas fa-file-pdf"></i> Generate PDF Report
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body report-modal-body">
+                    <form id="reportForm">
+                        <div class="mb-4">
+                            <label for="reportTitle" class="form-label report-label">
+                                <i class="fas fa-heading"></i> Report Title
+                            </label>
+                            <input type="text" class="form-control report-input" id="reportTitle" 
+                                   value="Green Vision AI Models Report" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label report-label">
+                                <i class="fas fa-brain"></i> Include Models
+                            </label>
+                            <div class="model-checkboxes">
+                                <div class="form-check report-checkbox">
+                                    <input class="form-check-input" type="checkbox" id="includeWeather" checked>
+                                    <label class="form-check-label" for="includeWeather">
+                                        <i class="fas fa-cloud-sun"></i> Weather Forecast
+                                    </label>
+                                </div>
+                                <div class="form-check report-checkbox">
+                                    <input class="form-check-input" type="checkbox" id="includeNDVI" checked>
+                                    <label class="form-check-label" for="includeNDVI">
+                                        <i class="fas fa-leaf"></i> NDVI Analysis
+                                    </label>
+                                </div>
+                                <div class="form-check report-checkbox">
+                                    <input class="form-check-input" type="checkbox" id="includeDrought" checked>
+                                    <label class="form-check-label" for="includeDrought">
+                                        <i class="fas fa-sun"></i> Drought Prediction
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="form-check report-checkbox">
+                                <input class="form-check-input" type="checkbox" id="includeMap" checked>
+                                <label class="form-check-label" for="includeMap">
+                                    <i class="fas fa-map"></i> Include Map Snapshot
+                                </label>
+                            </div>
+                            <div class="form-check report-checkbox">
+                                <input class="form-check-input" type="checkbox" id="includeCSV">
+                                <label class="form-check-label" for="includeCSV">
+                                    <i class="fas fa-file-csv"></i> Include CSV Data Files
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="report-summary">
+                            <h6><i class="fas fa-info-circle"></i> Report Summary</h6>
+                            <p id="reportSummaryText">Your report will include all available model results and visualizations.</p>
+                        </div>
+                    </form>
+                    
+                    <!-- Loading State -->
+                    <div id="reportGenerating" class="report-generating" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Generating your PDF report...</p>
+                        <div class="progress" style="height: 4px; margin-top: 15px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 100%; background: linear-gradient(90deg, #5eb8b8, #4dd084);"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer report-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-generate-report" id="generateReportBtn">
+                        <i class="fas fa-download"></i> Generate PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Futuristic Footer -->
+    <footer class="futuristic-footer" id="contact" role="contentinfo">
+        <!-- Neon Gradient Top Border -->
+        <div class="footer-top-border"></div>
+        
+        <!-- Background Effects -->
+        <div class="footer-background-effects" aria-hidden="true">
+            <div class="footer-grid"></div>
+            <div class="footer-glow-orbs"></div>
+        </div>
+        
+        <div class="container">
+            <!-- Main Footer Content -->
+            <div class="footer-main">
+                <div class="row g-4">
+                    <!-- Column 1: Logo & Description -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                        <div class="footer-column">
+                            <div class="footer-logo">
+                                <div class="logo-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <span class="logo-text">Green Vision</span>
+                            </div>
+                            <p class="footer-description">
+                                Revolutionizing agriculture through AI-powered insights and NASA satellite data. 
+                                Building a sustainable future, one farm at a time.
+                            </p>
+                            <div class="footer-badge">
+                                <i class="fas fa-users"></i>
+                                <span>Powered by McCarthies Team</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 2: Quick Links -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="footer-column">
+                            <h3 class="footer-heading">Quick Links</h3>
+                            <ul class="footer-links">
+                                <li>
+                                    <a href="{% url 'home' %}#home" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>Home</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'home' %}#about" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>About Us</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'home' %}#features" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>Features</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#contact" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>Contact</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 3: Contact Info -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="footer-column">
+                            <h3 class="footer-heading">Contact Info</h3>
+                            <ul class="footer-contact">
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <span class="contact-label">Email</span>
+                                        <a href="mailto:green8vision@gmail.com" class="contact-value">
+                                            green8vision@gmail.com
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-location-dot"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <span class="contact-label">Location</span>
+                                        <span class="contact-value">
+                                            Earth Observation HQ
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 4: Social Media -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="footer-column">
+                            <h3 class="footer-heading">Connect With Us</h3>
+                            <p class="footer-social-text">
+                                Follow us on social media for the latest updates and insights.
+                            </p>
+                            <div class="footer-social-links">
+                                <a href="#" class="social-link" aria-label="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="social-link" aria-label="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="social-link" aria-label="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="social-link" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                            <a href="#home" class="back-to-top">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>Back to Top</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom - Copyright -->
+            <div class="footer-bottom">
+                <div class="footer-divider"></div>
+                <div class="footer-copyright">
+                    <p>&copy; 2025 Green Vision. All rights reserved.</p>
+                    <div class="footer-legal-links">
+                        <a href="#" class="legal-link">Privacy Policy</a>
+                        <span class="separator">|</span>
+                        <a href="#" class="legal-link">Terms of Service</a>
+                        <span class="separator">|</span>
+                        <a href="#" class="legal-link">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    
+    <!-- Map Scripts -->
+    <script src="{% static 'js/map-data.js' %}"></script>
+    <script src="{% static 'js/map-app.js' %}"></script>
+    
+    <!-- Weather Forecast Script -->
+    <script src="{% static 'js/weather-forecast.js' %}"></script>
+    
+    <!-- NDVI Analysis Script -->
+    <script>
+        // NDVI Analysis functionality
+        let ndviSelectedLat = null;
+        let ndviSelectedLng = null;
+        
+        // Update NDVI location when map is clicked (wait for map to be ready)
+        setTimeout(function() {
+            if (typeof map !== 'undefined' && map) {
+                map.on('click', function(e) {
+                    ndviSelectedLat = e.latlng.lat;
+                    ndviSelectedLng = e.latlng.lng;
+                    
+                    // Update NDVI location display
+                    const ndviLocation = document.getElementById('ndviSelectedLocation');
+                    if (ndviLocation) {
+                        ndviLocation.innerHTML = `
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Selected: ${ndviSelectedLat.toFixed(4)}, ${ndviSelectedLng.toFixed(4)}</span>
+                        `;
+                    }
+                });
+            }
+        }, 1000);
+        
+        // NDVI Form submission
+        const ndviForm = document.getElementById('ndviForm');
+        if (ndviForm) {
+            ndviForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!ndviSelectedLat || !ndviSelectedLng) {
+                    alert('Please select a location on the map first');
+                    return;
+                }
+            
+            // Prepare request data (no historical data needed - auto-generated)
+            const requestData = {
+                latitude: ndviSelectedLat,
+                longitude: ndviSelectedLng
+            };
+            
+            // Show loading
+            document.getElementById('ndviLoading').style.display = 'block';
+            document.getElementById('ndviResults').style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/predict-ndvi/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayNDVIResults(result.data);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                const ndviLoading = document.getElementById('ndviLoading');
+                if (ndviLoading) {
+                    ndviLoading.style.display = 'none';
+                }
+            }
+            });
+        }
+        
+        function displayNDVIResults(data) {
+            const analysis = data.current_analysis;
+            const health = analysis.health_classification;
+            
+            // Display NDVI value
+            document.getElementById('ndviValue').textContent = analysis.predicted_ndvi.toFixed(4);
+            document.getElementById('ndviValue').style.color = health.color;
+            
+            // Display health badge
+            const badge = document.getElementById('ndviHealthBadge');
+            badge.textContent = `${health.category} - ${health.health}`;
+            badge.style.backgroundColor = health.color;
+            
+            // Display trend
+            const trend = analysis.trend;
+            document.getElementById('ndviTrend').innerHTML = `
+                <span class="trend-icon">${trend.icon}</span>
+                <span class="trend-text">Trend: ${trend.description}</span>
+            `;
+            
+            // Display forecast
+            const forecastHTML = data.forecast.predictions.map(pred => `
+                <div class="col-md-4">
+                    <div class="forecast-item">
+                        <div class="forecast-step">Step ${pred.step}</div>
+                        <div class="forecast-ndvi" style="color: ${pred.health.color};">${pred.ndvi.toFixed(3)}</div>
+                        <div class="forecast-health">${pred.health.health}</div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('ndviForecast').innerHTML = forecastHTML;
+            
+            // Display recommendations
+            const recommendationsHTML = data.recommendations.map(rec => `
+                <div class="recommendation-item ${rec.priority.toLowerCase()}">
+                    <div class="recommendation-header">
+                        <span class="recommendation-icon">${rec.icon}</span>
+                        <strong>${rec.action}</strong>
+                    </div>
+                    <div class="recommendation-description">${rec.description}</div>
+                </div>
+            `).join('');
+            document.getElementById('ndviRecommendations').innerHTML = recommendationsHTML;
+            
+            // Display statistics
+            document.getElementById('ndviMean').textContent = analysis.historical_mean.toFixed(4);
+            document.getElementById('ndviStd').textContent = analysis.historical_std.toFixed(4);
+            document.getElementById('ndviConfidence').textContent = analysis.confidence;
+            document.getElementById('ndviDataPoints').textContent = data.historical_data.length;
+            
+            // Show results
+            document.getElementById('ndviResults').style.display = 'block';
+        }
+    </script>
+    
+    <!-- AI Models JavaScript -->
+    <script>
+        // Map click handler for AI Models - Wait for map to be ready
+        function setupAIModelsMapHandler() {
+            if (typeof map !== 'undefined' && map) {
+                map.on('click', function(e) {
+                    const lat = e.latlng.lat.toFixed(4);
+                    const lon = e.latlng.lng.toFixed(4);
+                    
+                    // Update all AI model forms
+                    const droughtLat = document.getElementById('drought-lat');
+                    const droughtLon = document.getElementById('drought-lon');
+                    const climateLat = document.getElementById('climate-lat');
+                    const climateLon = document.getElementById('climate-lon');
+                    const heatmapLat = document.getElementById('heatmap-lat');
+                    const heatmapLon = document.getElementById('heatmap-lon');
+                    const recLat = document.getElementById('rec-lat');
+                    const recLon = document.getElementById('rec-lon');
+                    
+                    if (droughtLat) droughtLat.value = lat;
+                    if (droughtLon) droughtLon.value = lon;
+                    if (climateLat) climateLat.value = lat;
+                    if (climateLon) climateLon.value = lon;
+                    if (heatmapLat) heatmapLat.value = lat;
+                    if (heatmapLon) heatmapLon.value = lon;
+                    if (recLat) recLat.value = lat;
+                    if (recLon) recLon.value = lon;
+                    
+                    // Visual feedback - Keep it green until changed
+                    const infoElements = document.querySelectorAll('.map-selector-info');
+                    console.log('Found', infoElements.length, 'info elements');
+                    infoElements.forEach(el => {
+                        el.style.background = 'rgba(107, 191, 89, 0.2)';
+                        el.style.borderColor = '#6BBF59';
+                        el.innerHTML = `<i class="fas fa-check-circle"></i> Location selected: ${lat}, ${lon}`;
+                        console.log('Updated info element:', el);
+                    });
+                });
+                console.log('✅ AI Models map handler attached');
+            } else {
+                // Retry after 500ms if map not ready
+                setTimeout(setupAIModelsMapHandler, 500);
+            }
+        }
+        
+        // Start trying to attach handler
+        setTimeout(setupAIModelsMapHandler, 1000);
+        
+        // Drought Model
+        const droughtForm = document.getElementById('droughtForm');
+        if (droughtForm) {
+            droughtForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const data = {
+                    latitude: parseFloat(document.getElementById('drought-lat').value),
+                    longitude: parseFloat(document.getElementById('drought-lon').value),
+                    date: document.getElementById('drought-date').value
+                };
+                
+                document.getElementById('droughtLoading').style.display = 'block';
+                document.getElementById('droughtResults').style.display = 'none';
+                
+                try {
+                    const response = await fetch('/api/predict/drought/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        displayDroughtResults(result);
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                } finally {
+                    document.getElementById('droughtLoading').style.display = 'none';
+                }
+            });
+        }
+        
+        function displayDroughtResults(data) {
+            const predictions = data.predictions;
+            let html = `
+                <div class="results-header">
+                    <h5><i class="fas fa-chart-line"></i> Drought Risk Assessment</h5>
+                    <div class="overall-risk risk-${data.overall_risk.toLowerCase()}">
+                        Overall Risk: ${data.overall_risk}
+                    </div>
+                </div>
+                <div class="row g-3 mt-3">
+            `;
+            
+            for (const [level, pred] of Object.entries(predictions)) {
+                html += `
+                    <div class="col-md-4">
+                        <div class="prediction-card">
+                            <h6>${level}</h6>
+                            <div class="prediction-value">${pred.probability}%</div>
+                            <div class="risk-badge risk-${pred.risk_level.toLowerCase()}">${pred.risk_level}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div><div class="recommendations-section mt-4">
+                <h6><i class="fas fa-lightbulb"></i> Recommendations</h6>
+                <ul class="recommendations-list">`;
+            
+            data.recommendations.forEach(rec => {
+                html += `<li>${rec}</li>`;
+            });
+            
+            html += `</ul></div>`;
+            
+            document.getElementById('droughtResults').innerHTML = html;
+            document.getElementById('droughtResults').style.display = 'block';
+        }
+        
+        // Climate Model
+        const climateForm = document.getElementById('climateForm');
+        if (climateForm) {
+            climateForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const data = {
+                    latitude: parseFloat(document.getElementById('climate-lat').value),
+                    longitude: parseFloat(document.getElementById('climate-lon').value),
+                    forecast_range: parseInt(document.getElementById('climate-range').value)
+                };
+                
+                document.getElementById('climateLoading').style.display = 'block';
+                document.getElementById('climateResults').style.display = 'none';
+                
+                try {
+                    const response = await fetch('/api/predict/climate/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        displayClimateResults(result);
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                } finally {
+                    document.getElementById('climateLoading').style.display = 'none';
+                }
+            });
+        }
+        
+        function displayClimateResults(data) {
+            let html = `
+                <div class="results-header">
+                    <h5><i class="fas fa-cloud-sun-rain"></i> ${data.forecast_range}-Day Climate Forecast</h5>
+                </div>
+                <div class="climate-forecast-grid mt-3">
+            `;
+            
+            data.predictions.slice(0, 7).forEach(pred => {
+                html += `
+                    <div class="forecast-day-card">
+                        <div class="day-label">Day ${pred.day}</div>
+                        <div class="forecast-item">
+                            <i class="fas fa-temperature-high"></i>
+                            <span>${pred.temperature}°C</span>
+                        </div>
+                        <div class="forecast-item">
+                            <i class="fas fa-cloud-rain"></i>
+                            <span>${pred.precipitation}mm</span>
+                        </div>
+                        <div class="forecast-item">
+                            <i class="fas fa-tint"></i>
+                            <span>${pred.humidity}%</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            
+            document.getElementById('climateResults').innerHTML = html;
+            document.getElementById('climateResults').style.display = 'block';
+        }
+        
+        // Heatmap Model
+        const heatmapForm = document.getElementById('heatmapForm');
+        if (heatmapForm) {
+            heatmapForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const data = {
+                    city: document.getElementById('heatmap-city').value,
+                    latitude: parseFloat(document.getElementById('heatmap-lat').value) || null,
+                    longitude: parseFloat(document.getElementById('heatmap-lon').value) || null,
+                    year: parseInt(document.getElementById('heatmap-year').value)
+                };
+                
+                document.getElementById('heatmapLoading').style.display = 'block';
+                document.getElementById('heatmapResults').style.display = 'none';
+                
+                try {
+                    const response = await fetch('/api/predict/heatmap/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        displayHeatmapResults(result);
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                } finally {
+                    document.getElementById('heatmapLoading').style.display = 'none';
+                }
+            });
+        }
+        
+        function displayHeatmapResults(data) {
+            let html = `
+                <div class="results-header">
+                    <h5><i class="fas fa-fire"></i> Heatmap for ${data.location} (${data.year})</h5>
+                    <p class="text-muted">Generated ${data.heatmap_data.length} data points</p>
+                </div>
+                <div id="heatmapContainer" style="height: 500px; border-radius: 12px; overflow: hidden; margin-top: 20px; border: 1.5px solid rgba(94, 184, 184, 0.2);"></div>
+                <div class="heatmap-legend mt-3">
+                    <h6><i class="fas fa-palette"></i> Legend</h6>
+                    <div class="legend-scale">
+                        <span class="legend-label">Low</span>
+                        <div class="legend-gradient"></div>
+                        <span class="legend-label">High</span>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('heatmapResults').innerHTML = html;
+            document.getElementById('heatmapResults').style.display = 'block';
+            
+            // Create heatmap
+            setTimeout(() => {
+                createHeatmap(data.heatmap_data);
+            }, 100);
+        }
+        
+        function createHeatmap(heatmapData) {
+            // Create a new map for heatmap
+            const heatmapContainer = document.getElementById('heatmapContainer');
+            if (!heatmapContainer) return;
+            
+            // Clear any existing map
+            heatmapContainer.innerHTML = '';
+            
+            // Get center point
+            const centerLat = heatmapData[0].lat;
+            const centerLon = heatmapData[0].lon;
+            
+            // Initialize map
+            const heatmapMap = L.map('heatmapContainer').setView([centerLat, centerLon], 10);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(heatmapMap);
+            
+            // Add colored circles for each data point
+            heatmapData.forEach(point => {
+                const color = getHeatmapColor(point.value);
+                const circle = L.circleMarker([point.lat, point.lon], {
+                    radius: 8,
+                    fillColor: color,
+                    color: color,
+                    weight: 1,
+                    opacity: 0.8,
+                    fillOpacity: 0.6
+                }).addTo(heatmapMap);
+                
+                // Add popup
+                circle.bindPopup(`
+                    <strong>Value: ${point.value.toFixed(2)}</strong><br>
+                    Lat: ${point.lat.toFixed(4)}<br>
+                    Lon: ${point.lon.toFixed(4)}
+                `);
+            });
+            
+            // Add center marker
+            L.marker([centerLat, centerLon], {
+                icon: L.divIcon({
+                    className: 'center-marker',
+                    html: '<div style="background: #6BBF59; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+                    iconSize: [12, 12]
+                })
+            }).addTo(heatmapMap).bindPopup('<strong>Selected Location</strong>');
+        }
+        
+        function getHeatmapColor(value) {
+            // Color gradient from blue (low) to red (high)
+            if (value < 20) return '#4A90E2';
+            if (value < 40) return '#5eb8b8';
+            if (value < 60) return '#6BBF59';
+            if (value < 80) return '#F39C12';
+            return '#E74C3C';
+        }
+        
+        // Recommendations Model
+        const recommendationsForm = document.getElementById('recommendationsForm');
+        if (recommendationsForm) {
+            recommendationsForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const data = {
+                    latitude: parseFloat(document.getElementById('rec-lat').value),
+                    longitude: parseFloat(document.getElementById('rec-lon').value),
+                    use_case: document.getElementById('rec-usecase').value,
+                    timeframe: document.getElementById('rec-timeframe').value
+                };
+                
+                document.getElementById('recommendationsLoading').style.display = 'block';
+                document.getElementById('recommendationsResults').style.display = 'none';
+                
+                try {
+                    const response = await fetch('/api/predict/recommendations/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        displayRecommendationsResults(result);
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                } finally {
+                    document.getElementById('recommendationsLoading').style.display = 'none';
+                }
+            });
+        }
+        
+        function displayRecommendationsResults(data) {
+            let html = `
+                <div class="results-header">
+                    <h5><i class="fas fa-lightbulb"></i> ${data.use_case.replace('_', ' ').toUpperCase()} - ${data.timeframe.replace('_', ' ')}</h5>
+                </div>
+                <div class="recommendations-section mt-3">
+                    <ul class="recommendations-list">
+            `;
+            
+            data.recommendations.forEach(rec => {
+                html += `<li><i class="fas fa-check-circle"></i> ${rec}</li>`;
+            });
+            
+            html += `</ul></div>`;
+            
+            document.getElementById('recommendationsResults').innerHTML = html;
+            document.getElementById('recommendationsResults').style.display = 'block';
+        }
+    </script>
+    
+    <!-- Loading Screen & Animations Script -->
+    <script>
+        // Loading Screen
+        let loadingPercentage = 0;
+        const loadingScreen = document.getElementById('loading-screen');
+        const percentageElement = document.querySelector('.loading-percentage');
+        
+        // Fallback: Hide loading screen after 3 seconds max
+        setTimeout(() => {
+            if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                loadingScreen.classList.add('hidden');
+            }
+        }, 3000);
+        
+        const loadingInterval = setInterval(() => {
+            loadingPercentage += Math.random() * 15;
+            if (loadingPercentage >= 100) {
+                loadingPercentage = 100;
+                clearInterval(loadingInterval);
+                setTimeout(() => {
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                    }
+                }, 300);
+            }
+            if (percentageElement) {
+                percentageElement.textContent = Math.floor(loadingPercentage) + '%';
+            }
+        }, 100);
+
+        // Hide loading screen when page is fully loaded
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                }
+            }, 500);
+        });
+        
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 1000,
+                    easing: 'ease-out-cubic',
+                    once: false, // Animation repeats on scroll
+                    offset: 100,
+                    delay: 0,
+                    mirror: true, // Animate on scroll up too
+                    anchorPlacement: 'top-bottom'
+                });
+                
+                // Refresh AOS on scroll for smooth animations
+                window.addEventListener('scroll', function() {
+                    AOS.refresh();
+                });
+            }
+            
+            // Parallax scroll effect
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        const scrolled = window.pageYOffset;
+                        
+                        // Parallax effect on background elements
+                        const bgEffects = document.querySelectorAll('.background-effects');
+                        bgEffects.forEach(bg => {
+                            bg.style.transform = `translateY(${scrolled * 0.3}px)`;
+                        });
+                        
+                        // Fade in/out effect on cards
+                        const cards = document.querySelectorAll('.control-panel, .info-card, .weather-forecast-section, .ai-models-section, .guide-card, .model-card');
+                        cards.forEach(card => {
+                            const rect = card.getBoundingClientRect();
+                            const windowHeight = window.innerHeight;
+                            
+                            if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0) scale(1)';
+                            } else if (rect.top > windowHeight) {
+                                card.style.opacity = '0.3';
+                                card.style.transform = 'translateY(30px) scale(0.95)';
+                            }
+                        });
+                        
+                        // Floating animation on icons
+                        const icons = document.querySelectorAll('.guide-icon, .result-icon, .stat-icon');
+                        icons.forEach((icon, index) => {
+                            const rect = icon.getBoundingClientRect();
+                            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                                const offset = Math.sin(scrolled * 0.002 + index) * 10;
+                                icon.style.transform = `translateY(${offset}px)`;
+                            }
+                        });
+                        
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Add stagger animation to list items
+            const listItems = document.querySelectorAll('.recommendations-list li, .stat-item');
+            listItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            // Guide Cards Interaction
+            const guideCards = document.querySelectorAll('.guide-card');
+            guideCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const target = this.getAttribute('data-bs-target');
+                    const expandIcon = this.querySelector('.guide-expand-icon i');
+                    
+                    // Toggle icon rotation
+                    if (expandIcon) {
+                        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                        if (isExpanded) {
+                            expandIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            expandIcon.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                });
+                
+                // Update aria-expanded attribute
+                const collapseElement = document.querySelector(card.getAttribute('data-bs-target'));
+                if (collapseElement) {
+                    collapseElement.addEventListener('shown.bs.collapse', function() {
+                        card.setAttribute('aria-expanded', 'true');
+                    });
+                    collapseElement.addEventListener('hidden.bs.collapse', function() {
+                        card.setAttribute('aria-expanded', 'false');
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.futuristic-nav');
+            const progressBar = document.querySelector('.nav-progress-bar');
+            
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+            
+            // Progress bar
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '#!') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        // Close any open guide cards first
+                        const openGuides = document.querySelectorAll('.guide-content.show');
+                        openGuides.forEach(guide => {
+                            const bsCollapse = bootstrap.Collapse.getInstance(guide);
+                            if (bsCollapse) {
+                                bsCollapse.hide();
+                            }
+                        });
+                        
+                        // Scroll to target with offset for fixed navbar
+                        setTimeout(() => {
+                            const navbarHeight = document.querySelector('.futuristic-nav')?.offsetHeight || 80;
+                            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }, 300);
+                    }
+                }
+            });
+        });
+        
+        // ==================== GET REPORT FUNCTIONALITY ====================
+        
+        // Open report modal
+        document.getElementById('getReportBtn')?.addEventListener('click', function() {
+            const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
+            reportModal.show();
+        });
+        
+        // Generate report
+        document.getElementById('generateReportBtn')?.addEventListener('click', async function() {
+            try {
+                // Collect form data
+                const title = document.getElementById('reportTitle').value;
+                const includeWeather = document.getElementById('includeWeather').checked;
+                const includeNDVI = document.getElementById('includeNDVI').checked;
+                const includeDrought = document.getElementById('includeDrought').checked;
+                const includeMap = document.getElementById('includeMap').checked;
+                const includeCSV = document.getElementById('includeCSV').checked;
+                
+                // Check if at least one model is selected
+                if (!includeWeather && !includeNDVI && !includeDrought) {
+                    alert('Please select at least one model to include in the report.');
+                    return;
+                }
+                
+                // Collect current model results from the page
+                const reportData = {};
+                
+                // Weather data
+                if (includeWeather) {
+                    const weatherResults = document.getElementById('weatherResults');
+                    if (weatherResults && weatherResults.style.display !== 'none') {
+                        // Try to get location from weather form inputs or use default
+                        const weatherLat = document.getElementById('weatherLat')?.value || 
+                                         document.querySelector('.selected-location')?.dataset?.lat || 
+                                         30.0444;
+                        const weatherLng = document.getElementById('weatherLon')?.value || 
+                                         document.querySelector('.selected-location')?.dataset?.lng || 
+                                         31.2357;
+                        
+                        reportData.weather = {
+                            temperature: document.querySelector('.temperature-card .result-value')?.textContent || 'N/A',
+                            precipitation: document.querySelector('.precipitation-card .result-value')?.textContent || 'N/A',
+                            humidity: document.querySelector('.humidity-card .result-value')?.textContent || 'N/A',
+                            location: {
+                                latitude: parseFloat(weatherLat),
+                                longitude: parseFloat(weatherLng)
+                            },
+                            date: {
+                                day: parseInt(document.getElementById('weatherDay')?.value) || 1,
+                                month: parseInt(document.getElementById('weatherMonth')?.value) || 1,
+                                year: parseInt(document.getElementById('weatherYear')?.value) || 2025
+                            }
+                        };
+                    }
+                }
+                
+                // NDVI data
+                if (includeNDVI) {
+                    const ndviResults = document.getElementById('ndviResults');
+                    if (ndviResults && ndviResults.style.display !== 'none') {
+                        // Use ndviSelectedLat/Lng if available, otherwise use defaults
+                        const ndviLat = (typeof ndviSelectedLat !== 'undefined' && ndviSelectedLat !== null) ? ndviSelectedLat : 30.0444;
+                        const ndviLng = (typeof ndviSelectedLng !== 'undefined' && ndviSelectedLng !== null) ? ndviSelectedLng : 31.2357;
+                        
+                        reportData.ndvi = {
+                            ndvi_value: document.getElementById('ndviValue')?.textContent || 'N/A',
+                            health_status: document.getElementById('ndviHealthBadge')?.textContent || 'N/A',
+                            location: {
+                                latitude: ndviLat,
+                                longitude: ndviLng
+                            },
+                            recommendations: []
+                        };
+                        
+                        // Collect recommendations
+                        const recElements = document.querySelectorAll('#ndviRecommendations .recommendation-item');
+                        recElements.forEach(rec => {
+                            const text = rec.querySelector('.recommendation-description')?.textContent;
+                            if (text) reportData.ndvi.recommendations.push(text.trim());
+                        });
+                    }
+                }
+                
+                // Drought data
+                if (includeDrought) {
+                    const droughtResults = document.getElementById('droughtResults');
+                    if (droughtResults && droughtResults.style.display !== 'none') {
+                        // Get drought location from form inputs with fallback
+                        const droughtLat = parseFloat(document.getElementById('drought-lat')?.value) || 30.0444;
+                        const droughtLng = parseFloat(document.getElementById('drought-lon')?.value) || 31.2357;
+                        
+                        reportData.drought = {
+                            risk_level: document.querySelector('.overall-risk')?.textContent?.replace('Overall Risk: ', '').trim() || 'N/A',
+                            location: {
+                                latitude: droughtLat,
+                                longitude: droughtLng
+                            },
+                            predictions: {}
+                        };
+                        
+                        // Collect drought predictions
+                        const predCards = droughtResults.querySelectorAll('.prediction-card');
+                        predCards.forEach(card => {
+                            const level = card.querySelector('h6')?.textContent?.trim();
+                            const value = card.querySelector('.prediction-value')?.textContent?.trim();
+                            if (level && value) {
+                                reportData.drought.predictions[level] = value;
+                            }
+                        });
+                    }
+                }
+                
+                // Check if we have any data to report
+                if (Object.keys(reportData).length === 0) {
+                    alert('No model results found. Please generate predictions first before creating a report.');
+                    return;
+                }
+                
+                // Capture map snapshot
+                let mapSnapshot = null;
+                if (includeMap && typeof map !== 'undefined') {
+                    try {
+                        // Use leaflet-image or html2canvas to capture map
+                        // For now, we'll use a placeholder
+                        mapSnapshot = await captureMapSnapshot();
+                    } catch (error) {
+                        console.error('Error capturing map:', error);
+                        // Continue without map snapshot
+                    }
+                }
+                
+                // Show loading state
+                document.getElementById('reportForm').style.display = 'none';
+                document.getElementById('reportGenerating').style.display = 'block';
+                document.getElementById('generateReportBtn').disabled = true;
+                
+                // Send request to backend
+                const response = await fetch('/api/reports/generate/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        ...reportData,
+                        map_snapshot: mapSnapshot,
+                        include_csv: includeCSV,
+                        date_range: {
+                            start: new Date().toISOString().split('T')[0],
+                            end: new Date().toISOString().split('T')[0]
+                        }
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Hide loading
+                    document.getElementById('reportGenerating').style.display = 'none';
+                    
+                    // Download the report directly to downloads folder
+                    const link = document.createElement('a');
+                    link.href = result.report_url;
+                    link.download = result.filename || 'green_vision_report.pdf';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // Remove link after a short delay
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                    }, 100);
+                    
+                    // Show success notification
+                    setTimeout(() => {
+                        const fileSize = (result.file_size / 1024).toFixed(2);
+                        alert(`✅ Report Downloaded Successfully!\n\n📄 File: ${result.filename}\n📦 Size: ${fileSize} KB\n📁 Location: Downloads folder\n\nThank you for using Green Vision!`);
+                    }, 300);
+                    
+                    // Close modal
+                    const reportModal = bootstrap.Modal.getInstance(document.getElementById('reportModal'));
+                    reportModal.hide();
+                    
+                    // Reset form
+                    document.getElementById('reportForm').style.display = 'block';
+                    document.getElementById('generateReportBtn').disabled = false;
+                } else {
+                    throw new Error(result.error || 'Failed to generate report');
+                }
+                
+            } catch (error) {
+                console.error('Error generating report:', error);
+                
+                // Show user-friendly error message
+                let errorMessage = 'Error generating report: ';
+                if (error.message.includes('selectedLat')) {
+                    errorMessage += 'Please generate predictions first before creating a report.';
+                } else if (error.message.includes('fetch')) {
+                    errorMessage += 'Network error. Please check your connection.';
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                alert(errorMessage);
+                
+                // Reset UI
+                document.getElementById('reportForm').style.display = 'block';
+                document.getElementById('reportGenerating').style.display = 'none';
+                document.getElementById('generateReportBtn').disabled = false;
+            }
+        });
+        
+        // Capture map snapshot function
+        async function captureMapSnapshot() {
+            return new Promise((resolve, reject) => {
+                try {
+                    if (typeof map === 'undefined') {
+                        resolve(null);
+                        return;
+                    }
+                    
+                    // Use leaflet-image library if available
+                    if (typeof leafletImage !== 'undefined') {
+                        leafletImage(map, function(err, canvas) {
+                            if (err) {
+                                console.error('Leaflet image error:', err);
+                                resolve(null);
+                            } else {
+                                resolve(canvas.toDataURL('image/png'));
+                            }
+                        });
+                    } else {
+                        // Fallback: try html2canvas
+                        const mapContainer = document.getElementById('map');
+                        if (mapContainer && typeof html2canvas !== 'undefined') {
+                            html2canvas(mapContainer).then(canvas => {
+                                resolve(canvas.toDataURL('image/png'));
+                            }).catch(err => {
+                                console.error('html2canvas error:', err);
+                                resolve(null);
+                            });
+                        } else {
+                            resolve(null);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error in captureMapSnapshot:', error);
+                    resolve(null);
+                }
+            });
+        }
+        
+        // ==================== MAIN ANALYSIS CHARTS ====================
+        
+        // Initialize main analysis charts on page load
+        window.addEventListener('load', function() {
+            setTimeout(initializeMainAnalysisCharts, 1000);
+        });
+        
+        function initializeMainAnalysisCharts() {
+            if (typeof Chart === 'undefined') return;
+            
+            Chart.defaults.color = '#e8eef3';
+            Chart.defaults.borderColor = 'rgba(94, 184, 184, 0.2)';
+            
+            const colors = {
+                primary: '#4dd084',
+                secondary: '#5eb8b8',
+                danger: '#E74C3C',
+                warning: '#F39C12',
+                info: '#3498db',
+                success: '#27ae60'
+            };
+            
+            // 1. Main Drought Time Chart
+            const mainDroughtCtx = document.getElementById('mainDroughtTimeChart')?.getContext('2d');
+            if (mainDroughtCtx) {
+                new Chart(mainDroughtCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022', '2024'],
+                        datasets: [
+                            {
+                                label: 'None',
+                                data: [72, 69, 60, 59, 68, 77, 55, 46],
+                                borderColor: colors.info,
+                                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                borderWidth: 3
+                            },
+                            {
+                                label: 'D0 (Abnormally Dry)',
+                                data: [28, 31, 40, 49, 32, 24, 62, 71],
+                                borderColor: colors.warning,
+                                backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                borderWidth: 3
+                            },
+                            {
+                                label: 'D1 (Moderate)',
+                                data: [12, 11, 28, 35, 14, 10, 47, 54],
+                                borderColor: colors.success,
+                                backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                borderWidth: 3
+                            },
+                            {
+                                label: 'D2 (Severe)',
+                                data: [4, 3, 20, 30, 3, 2, 15, 36],
+                                borderColor: colors.danger,
+                                backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                borderWidth: 3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: { padding: 20, usePointStyle: true, font: { size: 13 } }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                                padding: 15,
+                                titleFont: { size: 14 },
+                                bodyFont: { size: 13 }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: 'rgba(94, 184, 184, 0.1)' },
+                                ticks: { callback: (value) => value + '%', font: { size: 12 } }
+                            },
+                            x: { grid: { color: 'rgba(94, 184, 184, 0.1)' }, ticks: { font: { size: 12 } } }
+                        },
+                        animation: { duration: 2000, easing: 'easeInOutQuart' }
+                    }
+                });
+            }
+            
+            // 2. Main Seasonal Chart
+            const mainSeasonalCtx = document.getElementById('mainSeasonalChart')?.getContext('2d');
+            if (mainSeasonalCtx) {
+                new Chart(mainSeasonalCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Winter', 'Spring', 'Summer', 'Fall'],
+                        datasets: [
+                            {
+                                label: 'D0',
+                                data: [65, 45, 70, 55],
+                                borderColor: colors.warning,
+                                backgroundColor: 'rgba(243, 156, 18, 0.2)',
+                                pointBackgroundColor: colors.warning,
+                                pointBorderWidth: 2,
+                                borderWidth: 3
+                            },
+                            {
+                                label: 'D1',
+                                data: [55, 35, 60, 45],
+                                borderColor: colors.success,
+                                backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                                pointBackgroundColor: colors.success,
+                                pointBorderWidth: 2,
+                                borderWidth: 3
+                            },
+                            {
+                                label: 'D2',
+                                data: [40, 25, 45, 35],
+                                borderColor: colors.danger,
+                                backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                                pointBackgroundColor: colors.danger,
+                                pointBorderWidth: 2,
+                                borderWidth: 3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top', labels: { font: { size: 13 } } } },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                grid: { color: 'rgba(94, 184, 184, 0.2)' },
+                                angleLines: { color: 'rgba(94, 184, 184, 0.2)' },
+                                pointLabels: { color: '#e8eef3', font: { size: 13 } },
+                                ticks: { backdropColor: 'transparent', font: { size: 11 } }
+                            }
+                        },
+                        animation: { duration: 2000, easing: 'easeInOutQuart' }
+                    }
+                });
+            }
+            
+            // 3. Main Model Comparison
+            const mainModelCtx = document.getElementById('mainModelComparisonChart')?.getContext('2d');
+            if (mainModelCtx) {
+                new Chart(mainModelCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['D0', 'D1', 'D2', 'D3', 'D4'],
+                        datasets: [
+                            {
+                                label: 'RMSE',
+                                data: [0.13, 0.19, 0.14, 0.07, 0.03],
+                                backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                                borderColor: colors.danger,
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'R² Score',
+                                data: [0.95, 0.98, 0.95, 0.97, 0.93],
+                                backgroundColor: 'rgba(77, 208, 132, 0.8)',
+                                borderColor: colors.primary,
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top', labels: { font: { size: 13 } } } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: 'rgba(94, 184, 184, 0.1)' }, ticks: { font: { size: 12 } } },
+                            x: { grid: { display: false }, ticks: { font: { size: 12 } } }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeInOutQuart',
+                            delay: (context) => context.dataIndex * 100
+                        }
+                    }
+                });
+            }
+            
+            // 4. Main Feature Importance
+            const mainFeatureCtx = document.getElementById('mainFeatureImportanceChart')?.getContext('2d');
+            if (mainFeatureCtx) {
+                new Chart(mainFeatureCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Drought Index', 'Rolling Mean 4w', 'Lag 1', 'Rolling Mean 8w', 'Lag 2', 'Season', 'Month', 'Year'],
+                        datasets: [{
+                            label: 'Importance Score',
+                            data: [0.85, 0.72, 0.58, 0.45, 0.38, 0.25, 0.18, 0.12],
+                            backgroundColor: [
+                                'rgba(77, 208, 132, 0.8)',
+                                'rgba(94, 184, 184, 0.8)',
+                                'rgba(52, 152, 219, 0.8)',
+                                'rgba(155, 89, 182, 0.8)',
+                                'rgba(243, 156, 18, 0.8)',
+                                'rgba(230, 126, 34, 0.8)',
+                                'rgba(231, 76, 60, 0.8)',
+                                'rgba(149, 165, 166, 0.8)'
+                            ],
+                            borderColor: colors.primary,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { beginAtZero: true, max: 1, grid: { color: 'rgba(94, 184, 184, 0.1)' }, ticks: { font: { size: 12 } } },
+                            y: { grid: { display: false }, ticks: { font: { size: 12 } } }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeInOutQuart',
+                            delay: (context) => context.dataIndex * 150
+                        }
+                    }
+                });
+            }
+        }
+        
+        // ==================== ANALYSIS CHARTS ====================
+        
+        // Initialize charts when Analysis tab is shown
+        document.getElementById('analysis-tab')?.addEventListener('shown.bs.tab', function() {
+            initializeAnalysisCharts();
+        });
+        
+        function initializeAnalysisCharts() {
+            // Check if charts already initialized
+            if (window.analysisChartsInitialized) return;
+            window.analysisChartsInitialized = true;
+            
+            // Chart.js Global Configuration
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.color = '#e8eef3';
+                Chart.defaults.borderColor = 'rgba(94, 184, 184, 0.2)';
+                
+                const colors = {
+                    primary: '#4dd084',
+                    secondary: '#5eb8b8',
+                    danger: '#E74C3C',
+                    warning: '#F39C12',
+                    info: '#3498db',
+                    success: '#27ae60'
+                };
+                
+                // 1. Drought Severity Over Time
+                const droughtTimeCtx = document.getElementById('droughtTimeChart')?.getContext('2d');
+                if (droughtTimeCtx) {
+                    new Chart(droughtTimeCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022', '2024'],
+                            datasets: [
+                                {
+                                    label: 'None',
+                                    data: [72, 69, 60, 59, 68, 77, 55, 46],
+                                    borderColor: colors.info,
+                                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                },
+                                {
+                                    label: 'D0',
+                                    data: [28, 31, 40, 49, 32, 24, 62, 71],
+                                    borderColor: colors.warning,
+                                    backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                },
+                                {
+                                    label: 'D1',
+                                    data: [12, 11, 28, 35, 14, 10, 47, 54],
+                                    borderColor: colors.success,
+                                    backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                },
+                                {
+                                    label: 'D2',
+                                    data: [4, 3, 20, 30, 3, 2, 15, 36],
+                                    borderColor: colors.danger,
+                                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                    labels: { padding: 15, usePointStyle: true }
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false,
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    padding: 12
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(94, 184, 184, 0.1)' },
+                                    ticks: { callback: (value) => value + '%' }
+                                },
+                                x: { grid: { color: 'rgba(94, 184, 184, 0.1)' } }
+                            },
+                            animation: { duration: 2000, easing: 'easeInOutQuart' }
+                        }
+                    });
+                }
+                
+                // 2. Seasonal Patterns
+                const seasonalCtx = document.getElementById('seasonalChart')?.getContext('2d');
+                if (seasonalCtx) {
+                    new Chart(seasonalCtx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['Winter', 'Spring', 'Summer', 'Fall'],
+                            datasets: [
+                                {
+                                    label: 'D0',
+                                    data: [65, 45, 70, 55],
+                                    borderColor: colors.warning,
+                                    backgroundColor: 'rgba(243, 156, 18, 0.2)',
+                                    pointBackgroundColor: colors.warning
+                                },
+                                {
+                                    label: 'D1',
+                                    data: [55, 35, 60, 45],
+                                    borderColor: colors.success,
+                                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                                    pointBackgroundColor: colors.success
+                                },
+                                {
+                                    label: 'D2',
+                                    data: [40, 25, 45, 35],
+                                    borderColor: colors.danger,
+                                    backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                                    pointBackgroundColor: colors.danger
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'top' } },
+                            scales: {
+                                r: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(94, 184, 184, 0.2)' },
+                                    angleLines: { color: 'rgba(94, 184, 184, 0.2)' },
+                                    pointLabels: { color: '#e8eef3', font: { size: 12 } },
+                                    ticks: { backdropColor: 'transparent' }
+                                }
+                            },
+                            animation: { duration: 2000, easing: 'easeInOutQuart' }
+                        }
+                    });
+                }
+                
+                // 3. Model Performance
+                const modelComparisonCtx = document.getElementById('modelComparisonChart')?.getContext('2d');
+                if (modelComparisonCtx) {
+                    new Chart(modelComparisonCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['D0', 'D1', 'D2', 'D3', 'D4'],
+                            datasets: [
+                                {
+                                    label: 'RMSE',
+                                    data: [0.13, 0.19, 0.14, 0.07, 0.03],
+                                    backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                                    borderColor: colors.danger,
+                                    borderWidth: 2
+                                },
+                                {
+                                    label: 'R² Score',
+                                    data: [0.95, 0.98, 0.95, 0.97, 0.93],
+                                    backgroundColor: 'rgba(77, 208, 132, 0.7)',
+                                    borderColor: colors.primary,
+                                    borderWidth: 2
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'top' } },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(94, 184, 184, 0.1)' }
+                                },
+                                x: { grid: { display: false } }
+                            },
+                            animation: {
+                                duration: 2000,
+                                easing: 'easeInOutQuart',
+                                delay: (context) => context.dataIndex * 100
+                            }
+                        }
+                    });
+                }
+                
+                // 4. Feature Importance
+                const featureImportanceCtx = document.getElementById('featureImportanceChart')?.getContext('2d');
+                if (featureImportanceCtx) {
+                    new Chart(featureImportanceCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Drought Index', 'Rolling Mean 4w', 'Lag 1', 'Rolling Mean 8w', 'Lag 2', 'Season', 'Month', 'Year'],
+                            datasets: [{
+                                label: 'Importance',
+                                data: [0.85, 0.72, 0.58, 0.45, 0.38, 0.25, 0.18, 0.12],
+                                backgroundColor: [
+                                    'rgba(77, 208, 132, 0.8)',
+                                    'rgba(94, 184, 184, 0.8)',
+                                    'rgba(52, 152, 219, 0.8)',
+                                    'rgba(155, 89, 182, 0.8)',
+                                    'rgba(243, 156, 18, 0.8)',
+                                    'rgba(230, 126, 34, 0.8)',
+                                    'rgba(231, 76, 60, 0.8)',
+                                    'rgba(149, 165, 166, 0.8)'
+                                ],
+                                borderColor: colors.primary,
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    max: 1,
+                                    grid: { color: 'rgba(94, 184, 184, 0.1)' }
+                                },
+                                y: { grid: { display: false } }
+                            },
+                            animation: {
+                                duration: 2000,
+                                easing: 'easeInOutQuart',
+                                delay: (context) => context.dataIndex * 150
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+    
+    <!-- Performance Optimizer -->
+    <script src="{% static 'js/performance-optimizer.js' %}" defer></script>
+    <script src="{% static 'js/check-optimizations.js' %}" defer></script>
+</body>
+</html>

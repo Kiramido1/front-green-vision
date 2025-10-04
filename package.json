@@ -1,0 +1,25 @@
+{
+  "name": "green-vision-pdf-service",
+  "version": "1.0.0",
+  "description": "PDF generation service for Green Vision using Puppeteer",
+  "main": "puppeteer_service.js",
+  "scripts": {
+    "start": "node puppeteer_service.js",
+    "dev": "nodemon puppeteer_service.js"
+  },
+  "keywords": [
+    "pdf",
+    "puppeteer",
+    "report",
+    "generation"
+  ],
+  "author": "Green Vision",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "puppeteer": "^21.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

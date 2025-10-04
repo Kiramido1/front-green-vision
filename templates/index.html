@@ -1,0 +1,1481 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Green Vision - Empowering farmers with data-driven insights for a sustainable future through AI analytics, satellite monitoring, and smart agriculture technology.">
+    <meta name="keywords" content="agriculture, farming, AI, sustainability, data analytics, satellite monitoring">
+    <meta name="author" content="Green Vision">
+    <meta name="theme-color" content="#00ff88">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><filter id='glow'><feGaussianBlur stdDeviation='3' result='coloredBlur'/><feMerge><feMergeNode in='coloredBlur'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><circle cx='50' cy='50' r='45' fill='%23000000'/><path d='M30 70 Q50 30 70 70 Q50 50 30 70' fill='%2300cc66' filter='url(%23glow)'/><circle cx='50' cy='55' r='3' fill='%2300ffcc'/></svg>">
+    
+    <title>Green Vision - Future of Agriculture Technology</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Critical CSS - Load synchronously -->
+    <style>
+        /* Critical above-the-fold styles */
+        :root {
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #1a1a1a;
+            --neon-teal: #00ffff;
+            --neon-green: #00ff88;
+            --font-primary: 'Orbitron', 'Courier New', monospace;
+            --font-secondary: 'Poppins', 'Arial', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-secondary);
+            background: var(--primary-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Prevent layout shift */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+    
+    <!-- Google Fonts - Load with display=swap for performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome - Load async for better performance -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    
+    <!-- Custom CSS - Critical styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- AOS CSS for animations - Load async -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" media="print" onload="this.media='all'">
+    
+    <!-- Simple CSS for the typewriter cursor and positioning -->
+    <style>
+        #vision-text {
+            color: var(--neon-green);
+        }
+        
+        .typed-cursor {
+            color: var(--neon-green) !important;
+            opacity: 1;
+            animation: typedjsBlink 0.7s infinite;
+        }
+        
+        @keyframes typedjsBlink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+        
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+        }
+        
+        .loading-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .loading-icon {
+            font-size: 3rem;
+            color: var(--neon-green);
+            animation: leafPulse 2s ease-in-out infinite;
+        }
+        
+        .loading-text-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--neon-teal), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(0, 255, 136, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-teal), var(--neon-green));
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        
+        .loading-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .loading-percentage {
+            font-family: 'Orbitron', monospace;
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        @keyframes leafPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px var(--neon-green));
+            }
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 15px var(--neon-green));
+            }
+        }
+        
+        /* Move elements up */
+        .hero-section {
+            padding-top: 30px;
+        }
+        
+        .hero-text-element {
+            margin-top: -100px;
+        }
+        
+        /* Improved Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem !important;
+                max-width: 100% !important;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-actions .btn {
+                margin: 5px 0;
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .hero-text-element {
+                margin-top: -50px;
+                text-align: center;
+                padding: 0 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem !important;
+            }
+            
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+        }
+        
+        /* About section unified text color and responsive video */
+        .about-section, 
+        .about-section .section-title, 
+        .about-section h3, 
+        .about-section p { 
+            color: #ffffff; 
+        }
+        /* Make About title match hero accent color */
+        .about-section .section-title { 
+            color: var(--neon-green);
+        }
+        .about-section .video-caption p { 
+            color: #ffffff; 
+            opacity: 0.9;
+        }
+        .about-section .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .about-section .video-container video.responsive-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen" aria-hidden="true">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-leaf loading-icon"></i>
+                <span class="loading-text-logo">Green Vision</span>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-text">Initializing Future Technology...</div>
+            <div class="loading-percentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header with Navigation -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top futuristic-nav" role="navigation" aria-label="Main navigation">
+            <div class="container">
+                <a class="navbar-brand futuristic-logo" href="#home" aria-label="Green Vision - Home">
+                    <div class="logo-container">
+                        <div class="logo-bg-effect"></div>
+                        <i class="fas fa-leaf glow-icon" aria-hidden="true"></i>
+                        <span class="logo-text">Green Vision</span>
+                    </div>
+                </a>
+                
+                <button 
+                    class="navbar-toggler futuristic-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation menu"
+                >
+                    <span class="toggler-line line-1"></span>
+                    <span class="toggler-line line-2"></span>
+                    <span class="toggler-line line-3"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto nav-menu" role="menubar">
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link active" href="#home" role="menuitem">
+                                <span class="link-text">Home</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link" href="#features" role="menuitem">
+                                <span class="link-text">Features</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link" href="#about" role="menuitem">
+                                <span class="link-text">About</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none">
+                            <a class="nav-link futuristic-link" href="javascript:void(0);" role="menuitem" onclick="window.location.href='/technology/';">
+                                <span class="link-text">Solution</span>
+                                <span class="link-bg"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item nav-cta" role="none">
+                            <a class="nav-link cta-link" href="#features" role="menuitem">
+                                <span class="cta-text">Get Started</span>
+                                <span class="cta-bg"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-progress-bar"></div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section" aria-labelledby="hero-title">
+            <!-- Background Effects -->
+            <div class="background-effects" aria-hidden="true">
+                <div class="floating-grid"></div>
+                <div class="floating-particles"></div>
+                <div class="animated-lines"></div>
+            </div>
+            
+            <div class="container">
+                <div class="hero-flexbox-container">
+                    <!-- Hero Text Content Element -->
+                    <div class="hero-text-element" data-aos="fade-right" data-aos-delay="100">
+                        <h1 id="hero-title" class="hero-title">
+                            <span class="glow-text-unified"><span id="typed-text"></span></span>
+                        </h1>
+                        
+                        <p class="hero-subtitle fade-in-up delay-1 animate-on-load">
+                            Empowering farmers with data-driven insights for a sustainable future.
+                        </p>
+                        
+                        <div class="hero-actions fade-in-up delay-2 animate-on-load">
+                            <a 
+                                href="#features"
+                                class="btn futuristic-btn primary-btn"
+                                aria-label="Join Green Vision platform"
+                            >
+                                <span>Join Us Now</span>
+                                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                            
+                            <a 
+                                href="#about"
+                                class="btn futuristic-btn secondary-btn"
+                                aria-label="Learn more about our technology"
+                            >
+                                <span>Learn More</span>
+                                <i class="fas fa-play" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Globe Element -->
+                    <div class="hero-globe-element">
+                        <div class="hero-visual" role="img" aria-label="Interactive 3D Earth globe visualization">
+                            <!-- Interactive Globe Container -->
+                            <div id="threejs-container" class="threejs-container">
+                                <div id="threejs-canvas" class="canvas-container"></div>
+                                
+                                <div id="model-loading" class="model-loading">
+                                    <div class="loading-animation">
+                                        <i class="fas fa-circle-notch spinning"></i>
+                                    </div>
+                                    <p>Loading Interactive Globe...</p>
+                                </div>
+                            </div>
+                            <div class="sphere-container">
+                                <!-- 3D Globe with lazy loading -->
+                                <div class="holographic-sphere" tabindex="0" role="button" aria-label="Interactive 3D globe - click and drag to rotate">
+                                    <div class="sphere-core"></div>
+                                    
+                                    <!-- Orbital Rings -->
+                                    <div class="sphere-rings" aria-hidden="true">
+                                        <div class="sphere-ring ring-1"></div>
+                                        <div class="sphere-ring ring-2"></div>
+                                        <div class="sphere-ring ring-3"></div>
+                                        <div class="sphere-ring ring-4"></div>
+                                    </div>
+                                    
+                                    <!-- Data Points -->
+                                    <div class="data-points" aria-hidden="true">
+                                        <div class="data-point" style="--delay: 0s;"></div>
+                                        <div class="data-point" style="--delay: 1s;"></div>
+                                        <div class="data-point" style="--delay: 2s;"></div>
+                                        <div class="data-point" style="--delay: 3s;"></div>
+                                        <div class="data-point" style="--delay: 4s;"></div>
+                                        <div class="data-point" style="--delay: 5s;"></div>
+                                        <div class="data-point" style="--delay: 6s;"></div>
+                                        <div class="data-point" style="--delay: 7s;"></div>
+                                        <div class="data-point" style="--delay: 8s;"></div>
+                                        <div class="data-point" style="--delay: 9s;"></div>
+                                        <div class="data-point" style="--delay: 10s;"></div>
+                                        <div class="data-point" style="--delay: 11s;"></div>
+                                    </div>
+                                    
+                                    <!-- Data Panels -->
+                                    <div class="data-panels" aria-hidden="true">
+                                        <div class="data-panel panel-1" style="--delay: 0s;">
+                                            <div class="panel-title">CROP YIELD</div>
+                                            <div class="panel-value">+24.7%</div>
+                                            <div class="panel-trend">↗ OPTIMAL</div>
+                                        </div>
+                                        <div class="data-panel panel-2" style="--delay: 2s;">
+                                            <div class="panel-title">SOIL HEALTH</div>
+                                            <div class="panel-value">92.3%</div>
+                                            <div class="panel-trend">↗ EXCELLENT</div>
+                                        </div>
+                                        <div class="data-panel panel-3" style="--delay: 4s;">
+                                            <div class="panel-title">EFFICIENCY</div>
+                                            <div class="panel-value">+18.9%</div>
+                                            <div class="panel-trend">↗ IMPROVED</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Wireframe Elements -->
+                                <div class="wireframe-elements" aria-hidden="true">
+                                    <div class="wireframe-cube cube-1"></div>
+                                    <div class="wireframe-cube cube-2"></div>
+                                </div>
+                                
+                                <!-- Floating Icons -->
+                                <div class="floating-elements" aria-hidden="true">
+                                    <div class="floating-icon" style="--delay: 0s;">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <div class="floating-icon" style="--delay: 1s;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="floating-icon" style="--delay: 2s;">
+                                        <i class="fas fa-satellite"></i>
+                                    </div>
+                                    <div class="floating-icon" style="--delay: 3s;">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <div class="floating-icon" style="--delay: 4s;">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="floating-icon" style="--delay: 5s;">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator" aria-hidden="true">
+                <button class="scroll-arrow" aria-label="Scroll to explore more content">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <span>Scroll to explore</span>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section" aria-labelledby="features-title">
+            <div class="container">
+                <header class="section-header text-center" data-aos="fade-up">
+                    <h2 id="features-title" class="section-title glow-text">Future Technology</h2>
+                    <p class="section-subtitle">Advanced solutions for tomorrow's agriculture</p>
+                </header>
+                
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <article class="feature-card">
+                            <div class="feature-icon" aria-hidden="true" data-aos="zoom-in" data-aos-delay="150">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="feature-title" data-aos="fade-up" data-aos-delay="200">AI Analytics</h3>
+                            <p class="feature-description" data-aos="fade-up" data-aos-delay="250">Machine learning algorithms analyze crop patterns and predict optimal harvest times for maximum yield efficiency.</p>
+                        </article>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <article class="feature-card">
+                            <div class="feature-icon" aria-hidden="true" data-aos="zoom-in" data-aos-delay="250">
+                                <i class="fas fa-satellite-dish"></i>
+                            </div>
+                            <h3 class="feature-title" data-aos="fade-up" data-aos-delay="300">Satellite Monitoring</h3>
+                            <p class="feature-description" data-aos="fade-up" data-aos-delay="350">Real-time satellite imagery provides comprehensive field monitoring and precision agriculture analysis.</p>
+                        </article>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <article class="feature-card">
+                            <div class="feature-icon" aria-hidden="true" data-aos="zoom-in" data-aos-delay="350">
+                                <i class="fas fa-cloud-rain"></i>
+                            </div>
+                            <h3 class="feature-title" data-aos="fade-up" data-aos-delay="400">Weather Prediction</h3>
+                            <p class="feature-description" data-aos="fade-up" data-aos-delay="450">Advanced weather forecasting helps optimize irrigation schedules and protect crops from adverse conditions.</p>
+                        </article>
+                    </div>
+                </div>
+                
+                <!-- Try Our Technology Button -->
+                <div class="features-button-container" data-aos="fade-up" data-aos-delay="500">
+                    <a href="{% url 'technology' %}" class="try-tech-btn">
+                        <span class="btn-icon"><i class="fas fa-rocket"></i></span>
+                        <span class="btn-text">Try Our Technology</span>
+                        <span class="btn-shine"></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="about-section" aria-labelledby="about-title">
+            <!-- Background Effects - Match Hero Section -->
+            <div class="background-effects" aria-hidden="true">
+                <div class="floating-grid"></div>
+                <div class="floating-particles"></div>
+                <div class="animated-lines"></div>
+            </div>
+            
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 id="about-title" class="section-title">About <span class="highlight">Green Vision</span></h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="about-content">
+                    <div class="row align-items-center">
+                        <!-- Left Column: Text Content -->
+                        <div class="col-lg-6 about-text" data-aos="fade-right" data-aos-delay="100">
+                            <h3>Who We Are</h3>
+                            <p>Green Vision is a pioneering initiative that combines NASA's satellite data with cutting-edge AI technology to revolutionize sustainable farming practices worldwide.</p>
+                            
+                            <h3>Our Mission</h3>
+                            <p>We're dedicated to empowering farmers with data-driven insights that optimize crop yields, conserve resources, and promote environmental sustainability in agriculture.</p>
+                            
+                            <h3>The Challenge</h3>
+                            <p>Global agriculture faces unprecedented challenges: climate change, resource scarcity, and the need to feed a growing population. Traditional farming methods are no longer sufficient to meet these demands sustainably.</p>
+                            
+                            <h3>Our Solution</h3>
+                            <p>By integrating NASA's Earth observation datasets with advanced machine learning algorithms, we've created an interactive farming simulation that demonstrates how space technology can transform agriculture. Our platform provides real-time insights on soil health, weather patterns, crop optimization, and resource management.</p>
+                            
+                            <h3>Global Impact</h3>
+                            <p>Our solutions are currently helping farmers across 15 countries increase their crop yields by an average of 24% while reducing water usage by 30% and minimizing the need for chemical fertilizers and pesticides.</p>
+                            
+                            <h3>The Future</h3>
+                            <p>Through education, innovation, and collaboration, Green Vision is building a sustainable future where technology and nature work in harmony to ensure food security for generations to come.</p>
+                        </div>
+                        
+                        <!-- Right Column: Video with Custom Controls -->
+                        <div class="col-lg-6 about-video" data-aos="fade-left" data-aos-delay="200">
+                            <div class="custom-video-wrapper">
+                                <video id="aboutVideo" class="responsive-video" loop preload="metadata" loading="lazy">
+                                    <source src="/media/our_video.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                
+                                <!-- Custom Video Controls -->
+                                <div class="custom-video-controls">
+                                    <button class="control-btn play-pause-btn" aria-label="Play video">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-filled"></div>
+                                        </div>
+                                        <div class="time-display">
+                                            <span class="current-time">0:00</span>
+                                            <span class="duration">0:00</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="volume-container">
+                                        <button class="control-btn volume-btn" aria-label="Mute/Unmute">
+                                            <i class="fas fa-volume-up"></i>
+                                        </button>
+                                        <div class="volume-slider-wrapper">
+                                            <input type="range" class="volume-slider" min="0" max="100" value="100" aria-label="Volume control">
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="control-btn fullscreen-btn" aria-label="Fullscreen">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="video-caption">
+                                <p>Experience how Green Vision combines NASA data with farming simulations to create a sustainable future</p>
+                            </div>
+                            
+                            <!-- Start Game Button -->
+                            <div class="game-button-container" data-aos="fade-up" data-aos-delay="200">
+                                <a href="#" class="start-game-btn" onclick="showGameNotification(event)">
+                                    <span class="btn-icon"><i class="fas fa-gamepad"></i></span>
+                                    <span class="btn-text">Start Game</span>
+                                    <span class="btn-glow"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+    </main>
+
+    <!-- Futuristic Footer -->
+    <footer class="futuristic-footer" id="contact" role="contentinfo">
+        <!-- Neon Gradient Top Border -->
+        <div class="footer-top-border"></div>
+        
+        <!-- Background Effects -->
+        <div class="footer-background-effects" aria-hidden="true">
+            <div class="footer-grid"></div>
+            <div class="footer-glow-orbs"></div>
+        </div>
+        
+        <div class="container">
+            <!-- Main Footer Content -->
+            <div class="footer-main">
+                <div class="row g-4">
+                    <!-- Column 1: Logo & Description -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                        <div class="footer-column">
+                            <div class="footer-logo">
+                                <div class="logo-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <span class="logo-text">Green Vision</span>
+                            </div>
+                            <p class="footer-description">
+                                Revolutionizing agriculture through AI-powered insights and NASA satellite data. 
+                                Building a sustainable future, one farm at a time.
+                            </p>
+                            <div class="footer-badge">
+                                <i class="fas fa-users"></i>
+                                <span>Powered by McCarthies Team</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 2: Quick Links -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="footer-column">
+                            <h3 class="footer-heading">Quick Links</h3>
+                            <ul class="footer-links">
+                                <li>
+                                    <a href="#home" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>Home</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#about" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>About Us</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#features" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>Features</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#contact" class="footer-link">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <span>Contact</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 3: Contact Info -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="footer-column">
+                            <h3 class="footer-heading">Contact Info</h3>
+                            <ul class="footer-contact">
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <span class="contact-label">Email</span>
+                                        <a href="mailto:green8vision@gmail.com" class="contact-value">
+                                            green8vision@gmail.com
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="contact-item">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-location-dot"></i>
+                                    </div>
+                                    <div class="contact-details">
+                                        <span class="contact-label">Location</span>
+                                        <span class="contact-value">
+                                            Earth Observation HQ
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 4: Social Media -->
+                    <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="footer-column">
+                            <h3 class="footer-heading">Connect With Us</h3>
+                            <p class="footer-social-text">
+                                Follow us on social media for the latest updates and insights.
+                            </p>
+                            <div class="footer-social-links">
+                                <a href="#" class="social-link" aria-label="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="social-link" aria-label="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="social-link" aria-label="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="social-link" aria-label="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                            <a href="#home" class="back-to-top">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>Back to Top</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom - Copyright -->
+            <div class="footer-bottom">
+                <div class="footer-divider"></div>
+                <div class="footer-copyright">
+                    <p>&copy; 2025 Green Vision. All rights reserved.</p>
+                    <div class="footer-legal-links">
+                        <a href="#" class="legal-link">Privacy Policy</a>
+                        <span class="separator">|</span>
+                        <a href="#" class="legal-link">Terms of Service</a>
+                        <span class="separator">|</span>
+                        <a href="#" class="legal-link">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Game Notification -->
+    <div id="gameNotification" class="game-notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="notification-text">
+                <h4 class="notification-title">Game Starting!</h4>
+                <p class="notification-message">Launching Green Vision Simulator...</p>
+            </div>
+            <button class="notification-close" onclick="closeGameNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="notification-progress"></div>
+    </div>
+
+    <!-- Scripts - Optimized loading order -->
+    <!-- Bootstrap JS - Essential for navigation -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script>
+    
+    <!-- Three.js Library - Defer for better performance -->
+    <script src="https://unpkg.com/three@0.158.0/build/three.min.js" defer></script>
+    <!-- Globe.gl Library - Defer for better performance -->
+    <script src="https://unpkg.com/globe.gl" defer></script>
+    
+    <!-- Typed.js for text animation - Defer -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+    
+    <!-- AOS JS for animations - Defer -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
+    <script>
+        // Loading Screen with Progress Bar
+        (function() {
+            let loadingPercentage = 0;
+            const loadingScreen = document.getElementById('loading-screen');
+            const percentageElement = document.querySelector('.loading-percentage');
+            const progressBar = document.querySelector('.loading-progress');
+            
+            // Animate progress bar
+            const loadingInterval = setInterval(function() {
+                loadingPercentage += Math.random() * 15;
+                
+                if (loadingPercentage >= 100) {
+                    loadingPercentage = 100;
+                    clearInterval(loadingInterval);
+                    
+                    // Hide loading screen after reaching 100%
+                    setTimeout(function() {
+                        if (loadingScreen) {
+                            loadingScreen.style.opacity = '0';
+                            loadingScreen.style.visibility = 'hidden';
+                        }
+                    }, 300);
+                }
+                
+                // Update percentage text and progress bar
+                if (percentageElement) {
+                    percentageElement.textContent = Math.floor(loadingPercentage) + '%';
+                }
+                if (progressBar) {
+                    progressBar.style.width = loadingPercentage + '%';
+                }
+            }, 100);
+            
+            // Hide loading screen when page fully loads
+            window.addEventListener('load', function() {
+                loadingPercentage = 100;
+                clearInterval(loadingInterval);
+                
+                if (percentageElement) {
+                    percentageElement.textContent = '100%';
+                }
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                }
+                
+                setTimeout(function() {
+                    if (loadingScreen) {
+                        loadingScreen.style.opacity = '0';
+                        loadingScreen.style.visibility = 'hidden';
+                    }
+                }, 500);
+            });
+            
+            // Fallback: Force hide after 3 seconds
+            setTimeout(function() {
+                clearInterval(loadingInterval);
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.visibility = 'hidden';
+                }
+            }, 3000);
+        })();
+        
+        // Performance optimization: Wait for DOM and libraries to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS - Animation runs every time you scroll
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 600,
+                    easing: 'ease-in-out',
+                    once: false,
+                    mirror: true,
+                    offset: 80,
+                    disable: false
+                });
+            }
+        });
+        
+        // Game Notification Functions
+        function showGameNotification(event) {
+            event.preventDefault();
+            
+            const notification = document.getElementById('gameNotification');
+            notification.classList.add('show');
+            
+            // Auto close after 3 seconds
+            setTimeout(() => {
+                closeGameNotification();
+            }, 3000);
+        }
+        
+        function closeGameNotification() {
+            const notification = document.getElementById('gameNotification');
+            notification.classList.remove('show');
+        }
+        // Footer helpers
+        function copyContactEmail() {
+            const email = 'green8vision@gmail.com';
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById('footer-toast');
+                if (!toast) return;
+                toast.textContent = 'Email copied: ' + email;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 1600);
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = email;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(textarea);
+            });
+        }
+        function submitNewsletter(e){
+            e.preventDefault();
+            const input = document.getElementById('newsletter-email');
+            if (!input) return false;
+            const value = String(input.value || '').trim();
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            const toast = document.getElementById('footer-toast');
+            if (toast){
+                toast.textContent = isValid ? 'Thanks for subscribing!' : 'Please enter a valid email.';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 1800);
+            }
+            if (isValid) input.value = '';
+            return false;
+        }
+        // Auto year update
+        (function updateYear(){
+            const el = document.getElementById('current-year');
+            if (el) el.textContent = new Date().getFullYear();
+        })();
+    </script>
+    
+    <!-- Typewriter Animation for "Vision" only -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Typed.js
+            const typedElement = document.getElementById('typed-text');
+            if (typedElement) {
+                // Set initial content to "Green" (static part)
+                typedElement.innerHTML = 'Green ';
+                
+                // Create a span for the Vision part that will be animated
+                const visionSpan = document.createElement('span');
+                visionSpan.id = 'vision-text';
+                typedElement.appendChild(visionSpan);
+                
+                // Initialize Typed.js only for the Vision part
+                const typed = new Typed('#vision-text', {
+                    strings: ['Vision'],
+                    typeSpeed: 80,
+                    backSpeed: 50,
+                    backDelay: 1500,
+                    startDelay: 500,
+                    loop: true,
+                    showCursor: true,
+                    cursorChar: '|'
+                });
+            }
+        });
+    </script>
+    
+    <!-- Interactive Globe.gl Earth -->
+    <script>
+        let globe = null;
+        let isGlobeInitialized = false;
+
+        // Initialize Globe.gl Earth
+        function initInteractiveGlobe() {
+            const container = document.getElementById('threejs-canvas');
+            const loading = document.getElementById('model-loading');
+            
+            if (!container) {
+                console.error('Container not found');
+                return;
+            }
+
+            try {
+                // Hide loading indicator
+                if (loading) loading.style.display = 'none';
+
+                // Clear any existing content
+                container.innerHTML = '';
+
+                // Calculate optimal globe size
+                const containerWidth = container.clientWidth || 550;
+                const containerHeight = container.clientHeight || 550;
+                const globeSize = Math.min(containerWidth, containerHeight, 550);
+
+                // Create Globe.gl instance
+                globe = Globe()
+                    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+                    .backgroundColor('rgba(0,0,0,0)')
+                    .width(globeSize)
+                    .height(globeSize)
+                    .enablePointerInteraction(true)
+                    (container);
+
+                // Configure auto-rotation
+                globe.controls().autoRotate = true;
+                globe.controls().autoRotateSpeed = 0.5;
+                globe.controls().enableZoom = true;
+                globe.controls().enablePan = false;
+                globe.controls().minDistance = 200;
+                globe.controls().maxDistance = 800;
+
+                // Add atmospheric glow
+                globe.scene().fog = new THREE.Fog(0x000000, 400, 2000);
+
+                // Set camera position
+                globe.camera().position.z = 300;
+
+                // Add neon points with website theme colors
+                addNeonPoints();
+
+                // Mark as initialized
+                isGlobeInitialized = true;
+                document.body.classList.add('threejs-active');
+
+                console.log('Globe.gl initialized successfully');
+
+                // Handle resize
+                window.addEventListener('resize', handleGlobeResize);
+
+            } catch (error) {
+                console.error('Error initializing Globe.gl:', error);
+                showFallbackGlobe();
+            }
+        }
+
+        // Handle globe resize
+        function handleGlobeResize() {
+            if (!globe || !isGlobeInitialized) return;
+            
+            const container = document.getElementById('threejs-canvas');
+            if (!container) return;
+
+            try {
+                // Calculate optimal globe size
+                const containerWidth = container.clientWidth || 550;
+                const containerHeight = container.clientHeight || 550;
+                const globeSize = Math.min(containerWidth, containerHeight, 550);
+                
+                globe
+                    .width(globeSize)
+                    .height(globeSize);
+            } catch (error) {
+                console.warn('Error resizing globe:', error);
+            }
+        }
+
+        // Add neon points on continents with website theme
+        function addNeonPoints() {
+            if (!globe) return;
+
+            // Agricultural/Tech points data with website theme colors
+            const neonPoints = [
+                // North America - Tech hubs
+                { lat: 37.7749, lng: -122.4194, color: '#00ff88', size: 0.8, label: 'Silicon Valley' }, // San Francisco
+                { lat: 40.7128, lng: -74.0060, color: '#4dd0d0', size: 0.7, label: 'New York' },
+                { lat: 41.8781, lng: -87.6298, color: '#00ff88', size: 0.6, label: 'Chicago' },
+
+                // Europe - Agricultural regions
+                { lat: 52.5200, lng: 13.4050, color: '#4dd0d0', size: 0.6, label: 'Berlin' }, // Germany
+                { lat: 48.8566, lng: 2.3522, color: '#00ff88', size: 0.7, label: 'Paris' },   // France
+                { lat: 51.5074, lng: -0.1278, color: '#4dd084', size: 0.6, label: 'London' }, // UK
+                { lat: 52.3676, lng: 4.9041, color: '#00ffff', size: 0.5, label: 'Amsterdam' }, // Netherlands
+
+                // Asia - Agricultural powerhouses
+                { lat: 35.6762, lng: 139.6503, color: '#00ff88', size: 0.8, label: 'Tokyo' },     // Japan
+                { lat: 31.2304, lng: 121.4737, color: '#4dd0d0', size: 0.9, label: 'Shanghai' },  // China
+                { lat: 28.6139, lng: 77.2090, color: '#00ff88', size: 0.7, label: 'New Delhi' },  // India
+                { lat: 1.3521, lng: 103.8198, color: '#4dd084', size: 0.6, label: 'Singapore' },
+
+                // Africa - Emerging agricultural tech
+                { lat: -26.2041, lng: 28.0473, color: '#00ffff', size: 0.6, label: 'Johannesburg' }, // South Africa
+                { lat: 30.0444, lng: 31.2357, color: '#4dd0d0', size: 0.7, label: 'Cairo' },        // Egypt
+                { lat: -1.2921, lng: 36.8219, color: '#00ff88', size: 0.5, label: 'Nairobi' },     // Kenya
+
+                // South America - Agricultural regions
+                { lat: -23.5505, lng: -46.6333, color: '#4dd084', size: 0.7, label: 'São Paulo' },   // Brazil
+                { lat: -34.6037, lng: -58.3816, color: '#00ff88', size: 0.6, label: 'Buenos Aires' }, // Argentina
+
+                // Australia/Oceania
+                { lat: -33.8688, lng: 151.2093, color: '#4dd0d0', size: 0.6, label: 'Sydney' },      // Australia
+                { lat: -37.8136, lng: 144.9631, color: '#00ffff', size: 0.5, label: 'Melbourne' },   // Australia
+
+                // Additional Agricultural Tech Hubs
+                { lat: 45.4215, lng: -75.6972, color: '#4dd084', size: 0.5, label: 'Ottawa' },        // Canada
+                { lat: 55.7558, lng: 37.6176, color: '#00ff88', size: 0.6, label: 'Moscow' },        // Russia
+                { lat: -15.7942, lng: -47.8822, color: '#4dd0d0', size: 0.6, label: 'Brasília' },    // Brazil
+                { lat: 19.4326, lng: -99.1332, color: '#00ffff', size: 0.5, label: 'Mexico City' },  // Mexico
+                { lat: 39.9042, lng: 116.4074, color: '#00ff88', size: 0.7, label: 'Beijing' },      // China
+                { lat: 13.7563, lng: 100.5018, color: '#4dd084', size: 0.5, label: 'Bangkok' },      // Thailand
+                { lat: 41.9028, lng: 12.4964, color: '#4dd0d0', size: 0.5, label: 'Rome' },         // Italy
+                { lat: 59.9311, lng: 30.3609, color: '#00ffff', size: 0.5, label: 'St. Petersburg' } // Russia
+            ];
+
+            // Add points to globe
+            globe.pointsData(neonPoints)
+                .pointColor(d => d.color)
+                .pointAltitude(0.01)
+                .pointRadius(d => d.size)
+                .pointResolution(8)
+                .pointLabel(d => `<div style="
+                    background: rgba(0, 0, 0, 0.8); 
+                    color: ${d.color}; 
+                    padding: 8px 12px; 
+                    border-radius: 6px; 
+                    font-family: 'Orbitron', monospace; 
+                    font-size: 12px; 
+                    border: 1px solid ${d.color};
+                    text-shadow: 0 0 10px ${d.color};
+                    box-shadow: 0 0 20px ${d.color}40;
+                ">${d.label}</div>`);
+
+            // Add animated rings around major points
+            const ringData = neonPoints.filter(p => p.size >= 0.7).map(p => ({
+                lat: p.lat,
+                lng: p.lng,
+                maxR: 3,
+                propagationSpeed: 1,
+                repeatPeriod: 2000,
+                color: p.color
+            }));
+
+            globe.ringsData(ringData)
+                .ringColor(d => d.color)
+                .ringMaxRadius('maxR')
+                .ringPropagationSpeed('propagationSpeed')
+                .ringRepeatPeriod('repeatPeriod');
+
+            // Add atmospheric arcs between major cities (agricultural tech network)
+            const arcData = [
+                // Primary tech corridors
+                { startLat: 37.7749, startLng: -122.4194, endLat: 35.6762, endLng: 139.6503, color: '#00ff88' }, // SF to Tokyo
+                { startLat: 51.5074, startLng: -0.1278, endLat: 40.7128, endLng: -74.0060, color: '#4dd0d0' },   // London to NYC
+                { startLat: 31.2304, startLng: 121.4737, endLat: 1.3521, endLng: 103.8198, color: '#00ffff' },   // Shanghai to Singapore
+                { startLat: 48.8566, startLng: 2.3522, endLat: 52.5200, endLng: 13.4050, color: '#4dd084' },     // Paris to Berlin
+                
+                // Agricultural knowledge exchange
+                { startLat: 28.6139, startLng: 77.2090, endLat: 39.9042, endLng: 116.4074, color: '#00ff88' },   // Delhi to Beijing
+                { startLat: -23.5505, startLng: -46.6333, endLat: -34.6037, endLng: -58.3816, color: '#4dd0d0' }, // São Paulo to Buenos Aires
+                { startLat: 30.0444, startLng: 31.2357, endLat: -1.2921, endLng: 36.8219, color: '#00ffff' },    // Cairo to Nairobi
+                { startLat: -33.8688, startLng: 151.2093, endLat: 13.7563, endLng: 100.5018, color: '#4dd084' },      // Sydney to Bangkok
+                
+                // Trans-continental agricultural networks
+                { startLat: 52.3676, startLng: 4.9041, endLat: 41.9028, endLng: 12.4964, color: '#00ffff' },     // Amsterdam to Rome
+                { startLat: 45.4215, startLng: -75.6972, endLat: 19.4326, endLng: -99.1332, color: '#4dd0d0' },  // Ottawa to Mexico City
+                { startLat: 55.7558, startLng: 37.6176, endLat: 59.9311, endLng: 30.3609, color: '#00ff88' }     // Moscow to St. Petersburg
+            ];
+
+            globe.arcsData(arcData)
+                .arcColor(d => d.color)
+                .arcDashLength(0.4)
+                .arcDashGap(0.2)
+                .arcDashAnimateTime(3000)
+                .arcStroke(0.5)
+                .arcAltitude(0.1);
+        }
+
+        // Fallback for when Globe.gl fails to load
+        function showFallbackGlobe() {
+            console.log('Showing fallback globe');
+            const container = document.getElementById('threejs-canvas');
+            if (!container) return;
+
+            // Calculate fallback size
+            const containerWidth = container.clientWidth || 550;
+            const containerHeight = container.clientHeight || 550;
+            const fallbackSize = Math.min(containerWidth, containerHeight, 450);
+
+            container.innerHTML = `
+                <div style="
+                    width: ${fallbackSize}px; 
+                    height: ${fallbackSize}px; 
+                    margin: 0 auto;
+                    background: 
+                        radial-gradient(circle at 30% 30%, #1a2a44 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, #0f1f3f 0%, transparent 50%),
+                        url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"49\" fill=\"%23051020\" stroke=\"%234dd084\" stroke-width=\"0.5\"/><path d=\"M20,30 Q50,20 80,35 Q70,50 40,45 Q30,60 25,75 Q15,65 20,30\" fill=\"%23154a2a\" opacity=\"0.8\"/><path d=\"M60,25 Q85,35 75,60 Q60,70 50,50 Q55,35 60,25\" fill=\"%232a4a2a\" opacity=\"0.7\"/></svg>');
+                    background-size: cover;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    animation: globeRotate 20s linear infinite;
+                    box-shadow: 
+                        0 0 60px rgba(77, 208, 132, 0.3),
+                        inset 0 0 40px rgba(0, 20, 40, 0.8);
+                    border: 1px solid rgba(77, 208, 132, 0.2);
+                    cursor: grab;
+                    user-select: none;
+                " 
+                onmousedown="this.style.cursor='grabbing'"
+                onmouseup="this.style.cursor='grab'"
+                onmouseleave="this.style.cursor='grab'"
+                >
+                    <!-- Atmosphere rings -->
+                    <div style="
+                        position: absolute;
+                        width: ${fallbackSize + 20}px;
+                        height: ${fallbackSize + 20}px;
+                        border: 1px solid rgba(77, 208, 208, 0.2);
+                        border-radius: 50%;
+                        animation: atmosphereFloat 8s ease-in-out infinite;
+                    "></div>
+                    <div style="
+                        position: absolute;
+                        width: ${fallbackSize + 40}px;
+                        height: ${fallbackSize + 40}px;
+                        border: 1px solid rgba(77, 208, 132, 0.1);
+                        border-radius: 50%;
+                        animation: atmosphereFloat 12s ease-in-out infinite reverse;
+                    "></div>
+                    
+                    <!-- Neon Tech/Agricultural Points -->
+                    <!-- North America points -->
+                    <div style="
+                        position: absolute;
+                        width: 8px;
+                        height: 8px;
+                        background: radial-gradient(circle, #00ff88 0%, rgba(0, 255, 136, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 25%;
+                        left: 15%;
+                        animation: neonPulse 2s ease-in-out infinite;
+                        box-shadow: 0 0 15px #00ff88;
+                    "></div>
+                    <div style="
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        background: radial-gradient(circle, #4dd0d0 0%, rgba(77, 208, 208, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 30%;
+                        left: 22%;
+                        animation: neonPulse 2.5s ease-in-out infinite 0.5s;
+                        box-shadow: 0 0 12px #4dd0d0;
+                    "></div>
+                    
+                    <!-- Europe points -->
+                    <div style="
+                        position: absolute;
+                        width: 7px;
+                        height: 7px;
+                        background: radial-gradient(circle, #00ffff 0%, rgba(0, 255, 255, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 22%;
+                        left: 48%;
+                        animation: neonPulse 2.2s ease-in-out infinite 1s;
+                        box-shadow: 0 0 13px #00ffff;
+                    "></div>
+                    <div style="
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        background: radial-gradient(circle, #4dd084 0%, rgba(77, 208, 132, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 25%;
+                        left: 52%;
+                        animation: neonPulse 2.8s ease-in-out infinite 1.5s;
+                        box-shadow: 0 0 12px #4dd084;
+                    "></div>
+                    
+                    <!-- Asia points -->
+                    <div style="
+                        position: absolute;
+                        width: 9px;
+                        height: 9px;
+                        background: radial-gradient(circle, #00ff88 0%, rgba(0, 255, 136, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 28%;
+                        right: 15%;
+                        animation: neonPulse 1.8s ease-in-out infinite 2s;
+                        box-shadow: 0 0 16px #00ff88;
+                    "></div>
+                    <div style="
+                        position: absolute;
+                        width: 7px;
+                        height: 7px;
+                        background: radial-gradient(circle, #4dd0d0 0%, rgba(77, 208, 208, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 32%;
+                        right: 20%;
+                        animation: neonPulse 2.3s ease-in-out infinite 2.5s;
+                        box-shadow: 0 0 14px #4dd0d0;
+                    "></div>
+                    
+                    <!-- Africa points -->
+                    <div style="
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        background: radial-gradient(circle, #00ffff 0%, rgba(0, 255, 255, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        top: 45%;
+                        left: 50%;
+                        animation: neonPulse 2.7s ease-in-out infinite 3s;
+                        box-shadow: 0 0 12px #00ffff;
+                    "></div>
+                    
+                    <!-- South America points -->
+                    <div style="
+                        position: absolute;
+                        width: 7px;
+                        height: 7px;
+                        background: radial-gradient(circle, #4dd084 0%, rgba(77, 208, 132, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        bottom: 25%;
+                        left: 25%;
+                        animation: neonPulse 2.4s ease-in-out infinite 3.5s;
+                        box-shadow: 0 0 13px #4dd084;
+                    "></div>
+                    
+                    <!-- Australia points -->
+                    <div style="
+                        position: absolute;
+                        width: 6px;
+                        height: 6px;
+                        background: radial-gradient(circle, #4dd0d0 0%, rgba(77, 208, 208, 0.3) 70%, transparent 100%);
+                        border-radius: 50%;
+                        bottom: 20%;
+                        right: 18%;
+                        animation: neonPulse 2.6s ease-in-out infinite 4s;
+                        box-shadow: 0 0 12px #4dd0d0;
+                    "></div>
+                </div>
+                
+                <style>
+                    @keyframes globeRotate {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                    
+                    @keyframes atmosphereFloat {
+                        0%, 100% { 
+                            opacity: 0.3; 
+                            transform: scale(1);
+                        }
+                        50% { 
+                            opacity: 0.6; 
+                            transform: scale(1.02);
+                        }
+                    }
+                    
+                    @keyframes agriGlow {
+                        0%, 100% { 
+                            opacity: 0.6; 
+                            transform: scale(1);
+                        }
+                        50% { 
+                            opacity: 1; 
+                            transform: scale(1.2);
+                        }
+                    }
+                    
+                    @keyframes neonPulse {
+                        0%, 100% { 
+                            opacity: 0.8; 
+                            transform: scale(1);
+                            filter: brightness(1);
+                        }
+                        25% { 
+                            opacity: 1; 
+                            transform: scale(1.3);
+                            filter: brightness(1.5);
+                        }
+                        50% { 
+                            opacity: 0.9; 
+                            transform: scale(1.1);
+                            filter: brightness(1.2);
+                        }
+                        75% { 
+                            opacity: 1; 
+                            transform: scale(1.2);
+                            filter: brightness(1.4);
+                        }
+                    }
+                </style>
+            `;
+            
+            // Add click interaction for fallback
+            const fallbackGlobe = container.querySelector('div');
+            if (fallbackGlobe) {
+                let isDragging = false;
+                let rotationSpeed = 0.5;
+                
+                fallbackGlobe.addEventListener('mousedown', () => {
+                    isDragging = true;
+                    rotationSpeed = 0.1;
+                    fallbackGlobe.style.animationDuration = '200s';
+                });
+                
+                fallbackGlobe.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    rotationSpeed = 0.5;
+                    fallbackGlobe.style.animationDuration = '20s';
+                });
+                
+                fallbackGlobe.addEventListener('mouseleave', () => {
+                    isDragging = false;
+                    rotationSpeed = 0.5;
+                    fallbackGlobe.style.animationDuration = '20s';
+                });
+            }
+
+            document.body.classList.add('threejs-active');
+        }
+
+        // Initialize when ready
+        function startGlobe() {
+            console.log('Starting Globe.gl initialization...');
+            
+            // Check if Globe.gl is available
+            if (typeof Globe === 'undefined') {
+                console.log('Globe.gl not loaded yet, checking again...');
+                setTimeout(startGlobe, 100);
+                return;
+            }
+
+            console.log('Globe.gl found, initializing...');
+            initInteractiveGlobe();
+        }
+
+        // Start initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startGlobe);
+        } else {
+            startGlobe();
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (globe && isGlobeInitialized) {
+                try {
+                    globe._destructor && globe._destructor();
+                } catch (error) {
+                    console.warn('Error during globe cleanup:', error);
+                }
+            }
+        });
+    </script>
+    
+    
+    
+    
+    <!-- Custom JavaScript - Load async for better performance -->
+    <script src="{% static 'js/app.js' %}" defer></script>
+    <script src="{% static 'js/video-controls.js' %}" defer></script>
+    <script src="{% static 'js/performance-monitor.js' %}" defer></script>
+</body>
+</html>
+
+

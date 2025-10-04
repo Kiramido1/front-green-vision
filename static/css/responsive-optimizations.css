@@ -1,0 +1,536 @@
+/* ===== RESPONSIVE & PERFORMANCE OPTIMIZATIONS ===== */
+/* This file enhances responsive design and performance without changing content */
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GPU Acceleration for smooth animations */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.control-panel,
+.info-card,
+.weather-forecast-section,
+.ai-models-section,
+.guide-card,
+.model-card,
+.hero-content,
+.sphere-container,
+.threejs-container {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Optimize images and media */
+img,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+img[loading="lazy"].loaded {
+    opacity: 1;
+}
+
+/* ===== FLEXIBLE GRID SYSTEM ===== */
+
+/* Container improvements */
+.container,
+.container-fluid {
+    width: 100%;
+    padding-right: var(--container-padding, 15px);
+    padding-left: var(--container-padding, 15px);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Responsive container widths */
+@media (min-width: 576px) {
+    .container { max-width: 540px; }
+}
+
+@media (min-width: 768px) {
+    .container { max-width: 720px; }
+}
+
+@media (min-width: 992px) {
+    .container { max-width: 960px; }
+}
+
+@media (min-width: 1200px) {
+    .container { max-width: 1140px; }
+}
+
+@media (min-width: 1400px) {
+    .container { max-width: 1320px; }
+}
+
+/* Flexible row system */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: calc(var(--spacing-md, 1rem) * -0.5);
+    margin-left: calc(var(--spacing-md, 1rem) * -0.5);
+}
+
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--spacing-md, 1rem) * 0.5);
+    padding-left: calc(var(--spacing-md, 1rem) * 0.5);
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+
+/* Fluid typography using clamp */
+h1, .h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.2;
+}
+
+h2, .h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.3;
+}
+
+h3, .h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.4;
+}
+
+h4, .h4 {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    line-height: 1.4;
+}
+
+h5, .h5 {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    line-height: 1.5;
+}
+
+h6, .h6 {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    line-height: 1.5;
+}
+
+p, .body-text {
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    line-height: 1.7;
+}
+
+/* ===== RESPONSIVE SPACING ===== */
+
+/* Flexible padding and margins */
+.section-padding {
+    padding: clamp(3rem, 8vw, 6rem) 0;
+}
+
+.section-padding-sm {
+    padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.section-padding-lg {
+    padding: clamp(4rem, 10vw, 8rem) 0;
+}
+
+/* ===== MOBILE-FIRST BREAKPOINTS ===== */
+
+/* Extra Small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    /* Reduce padding on small screens */
+    .control-panel,
+    .info-card,
+    .weather-forecast-section,
+    .ai-models-section {
+        padding: 1rem !important;
+    }
+    
+    /* Stack columns */
+    .row > * {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    /* Smaller buttons */
+    .btn,
+    .weather-predict-btn,
+    .model-predict-btn {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Compact forms */
+    .form-control,
+    .form-select,
+    .weather-input,
+    .model-input {
+        padding: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Smaller map */
+    #map {
+        height: 350px !important;
+    }
+    
+    /* Compact cards */
+    .guide-card,
+    .weather-result-card,
+    .prediction-card {
+        padding: 1rem !important;
+    }
+    
+    /* Reduce icon sizes */
+    .guide-icon,
+    .result-icon {
+        font-size: 2rem !important;
+        width: 50px !important;
+        height: 50px !important;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .col-sm-6 { width: 50%; }
+    .col-sm-12 { width: 100%; }
+    
+    #map {
+        height: 400px !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .col-md-4 { width: 33.333333%; }
+    .col-md-6 { width: 50%; }
+    .col-md-8 { width: 66.666667%; }
+    .col-md-12 { width: 100%; }
+    
+    #map {
+        height: 500px !important;
+    }
+    
+    /* Optimize spacing */
+    .control-panel,
+    .info-card,
+    .weather-forecast-section {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .col-lg-3 { width: 25%; }
+    .col-lg-4 { width: 33.333333%; }
+    .col-lg-6 { width: 50%; }
+    .col-lg-8 { width: 66.666667%; }
+    .col-lg-12 { width: 100%; }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .col-xl-3 { width: 25%; }
+    .col-xl-4 { width: 33.333333%; }
+    .col-xl-6 { width: 50%; }
+    .col-xl-8 { width: 66.666667%; }
+    .col-xl-12 { width: 100%; }
+}
+
+/* ===== TOUCH OPTIMIZATION ===== */
+
+/* Larger touch targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+    button,
+    a,
+    .btn,
+    .nav-link,
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .control-panel:hover,
+    .info-card:hover,
+    .guide-card:hover {
+        transform: none !important;
+    }
+    
+    /* Optimize tap highlights */
+    * {
+        -webkit-tap-highlight-color: rgba(77, 208, 208, 0.2);
+    }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+
+@media (max-height: 600px) and (orientation: landscape) {
+    /* Reduce vertical spacing in landscape */
+    .hero-section,
+    .section-padding {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    #map {
+        height: 300px !important;
+    }
+    
+    .threejs-container,
+    .sphere-container {
+        height: 250px !important;
+    }
+}
+
+/* ===== PERFORMANCE: REDUCE MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    /* Disable parallax and complex animations */
+    .background-effects,
+    .floating-grid,
+    .floating-particles {
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+/* ===== PRINT OPTIMIZATION ===== */
+
+@media print {
+    /* Hide non-essential elements */
+    .futuristic-nav,
+    .loading-screen,
+    .background-effects,
+    .floating-grid,
+    .floating-particles,
+    button,
+    .btn {
+        display: none !important;
+    }
+    
+    /* Optimize for print */
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+    }
+    
+    /* Remove shadows and effects */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}
+
+/* ===== FLEXIBLE IMAGES & MEDIA ===== */
+
+/* Responsive images */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive embeds */
+.embed-responsive {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+
+.embed-responsive::before {
+    display: block;
+    content: "";
+}
+
+.embed-responsive-16by9::before {
+    padding-top: 56.25%;
+}
+
+.embed-responsive-4by3::before {
+    padding-top: 75%;
+}
+
+.embed-responsive-1by1::before {
+    padding-top: 100%;
+}
+
+.embed-responsive iframe,
+.embed-responsive embed,
+.embed-responsive object,
+.embed-responsive video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Display utilities */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+
+@media (max-width: 575.98px) {
+    .d-sm-none { display: none !important; }
+    .d-sm-block { display: block !important; }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .d-md-none { display: none !important; }
+    .d-md-block { display: block !important; }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .d-lg-none { display: none !important; }
+    .d-lg-block { display: block !important; }
+}
+
+/* Text alignment */
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+
+@media (max-width: 767.98px) {
+    .text-sm-center { text-align: center !important; }
+}
+
+/* Flex utilities */
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-nowrap { flex-wrap: nowrap !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+.align-items-center { align-items: center !important; }
+.flex-column { flex-direction: column !important; }
+
+@media (max-width: 767.98px) {
+    .flex-sm-column { flex-direction: column !important; }
+}
+
+/* ===== SMOOTH SCROLLING ===== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Optimize scroll performance */
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* ===== LOADING OPTIMIZATION ===== */
+
+/* Skeleton loading states */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+    outline: 2px solid var(--neon-teal, #4dd0d0);
+    outline-offset: 2px;
+}
+
+/* Skip to main content link */
+.skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--neon-green, #4dd084);
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 10000;
+}
+
+.skip-to-main:focus {
+    top: 0;
+}
+
+/* ===== PERFORMANCE: CONTENT VISIBILITY ===== */
+
+/* Optimize rendering of off-screen content */
+section:not(.hero-section) {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* ===== NETWORK OPTIMIZATION ===== */
+
+/* Preload critical resources */
+link[rel="preload"] {
+    as: font;
+    crossorigin: anonymous;
+}
+
+/* ===== FINAL OPTIMIZATIONS ===== */
+
+/* Prevent layout shift */
+.aspect-ratio-box {
+    position: relative;
+    width: 100%;
+}
+
+.aspect-ratio-box::before {
+    content: "";
+    display: block;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.aspect-ratio-box > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Optimize font loading */
+@font-face {
+    font-display: swap;
+}

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        /* Professional PDF Report - Enhanced Design */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: A4;
+            margin: 2.5cm 2cm;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #2c3e50;
+            line-height: 1.7;
+            font-size: 10.5pt;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            padding: 100px 40px 80px 40px;
+            page-break-after: always;
+            position: relative;
+        }
+        
+        .cover-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #27ae60, #2ecc71, #27ae60);
+        }
+        
+        .logo {
+            font-size: 72px;
+            margin-bottom: 25px;
+            line-height: 1;
+        }
+        
+        .company-name {
+            font-size: 42px;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 12px;
+            letter-spacing: 3px;
+        }
+        
+        .tagline {
+            font-size: 13px;
+            color: #95a5a6;
+            margin-bottom: 80px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+        
+        .report-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 50px 0 25px 0;
+            line-height: 1.4;
+        }
+        
+        .report-subtitle {
+            font-size: 15px;
+            color: #7f8c8d;
+            margin-bottom: 70px;
+            font-weight: 400;
+        }
+        
+        .meta-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #27ae60;
+            border-radius: 10px;
+            padding: 35px 45px;
+            display: inline-block;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.1);
+        }
+        
+        .meta-row {
+            margin: 14px 0;
+            font-size: 12.5px;
+            line-height: 1.6;
+        }
+        
+        .meta-label {
+            color: #27ae60;
+            font-weight: 700;
+            display: inline-block;
+            min-width: 150px;
+        }
+        
+        .meta-value {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        /* Page Header */
+        .page-header {
+            border-bottom: 4px solid #27ae60;
+            padding-bottom: 18px;
+            margin-bottom: 35px;
+        }
+        
+        .page-title {
+            font-size: 26px;
+            color: #27ae60;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: 500;
+        }
+        
+        /* Table of Contents */
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .toc-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-left: 5px solid #27ae60;
+            padding: 18px 25px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .toc-number {
+            color: #27ae60;
+            font-weight: 700;
+            margin-right: 18px;
+            font-size: 17px;
+        }
+        
+        .toc-title {
+            color: #2c3e50;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Model Sections */
+        .model-section {
+            background: #ffffff;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 0;
+            margin-bottom: 35px;
+            page-break-inside: avoid;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .model-header {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 8px 8px 0 0;
+            margin: 0;
+        }
+        
+        .model-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            display: inline-block;
+        }
+        
+        .model-icon {
+            font-size: 36px;
+            margin-right: 18px;
+            vertical-align: middle;
+        }
+        
+        .model-content {
+            padding: 30px;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+            border-left: 5px solid #27ae60;
+            padding: 20px 25px;
+            margin: 25px 0;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.1);
+        }
+        
+        .info-row {
+            margin: 12px 0;
+            font-size: 12.5px;
+            line-height: 1.7;
+        }
+        
+        .info-label {
+            color: #27ae60;
+            font-weight: 700;
+            display: inline-block;
+            min-width: 130px;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        /* Data Grid */
+        .data-grid {
+            display: table;
+            width: 100%;
+            margin: 30px 0;
+            border-collapse: separate;
+            border-spacing: 18px 0;
+        }
+        
+        .data-card {
+            display: table-cell;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 25px 20px;
+            text-align: center;
+            width: 33.33%;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        }
+        
+        .data-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+        
+        .data-label {
+            font-size: 10.5px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .data-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #27ae60;
+            line-height: 1.2;
+        }
+        
+        .data-unit {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-left: 4px;
+            font-weight: 600;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 17px;
+            color: #27ae60;
+            font-weight: 700;
+            margin: 30px 0 18px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e8e8e8;
+        }
+        
+        .section-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        /* Recommendations */
+        .recommendations-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .recommendation-item {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+            border-left: 4px solid #27ae60;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #2c3e50;
+            line-height: 1.7;
+            box-shadow: 0 2px 6px rgba(39, 174, 96, 0.08);
+        }
+        
+        .recommendation-item:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: 700;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-excellent {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-good {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .status-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Map Container */
+        .map-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .map-image {
+            max-width: 100%;
+            border: 3px solid #e8e8e8;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Summary Section */
+        .summary-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .summary-text {
+            color: #2c3e50;
+            line-height: 1.9;
+            margin-bottom: 18px;
+            text-align: justify;
+            font-size: 11.5pt;
+        }
+        
+        .key-insights {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 2px solid #c8e6c9;
+        }
+        
+        .insight-title {
+            font-size: 15px;
+            color: #27ae60;
+            font-weight: 700;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #c8e6c9;
+        }
+        
+        .insight-item {
+            padding: 10px 0;
+            font-size: 12px;
+            color: #2c3e50;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+        
+        .insight-item:before {
+            content: "→";
+            color: #27ae60;
+            font-weight: 700;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        .report-footer {
+            margin-top: 60px;
+            padding-top: 25px;
+            border-top: 3px solid #e8e8e8;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .footer-text {
+            color: #7f8c8d;
+            font-size: 11px;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+        
+        .copyright {
+            margin-top: 15px;
+            font-size: 10px;
+            color: #95a5a6;
+            line-height: 1.6;
+        }
+        
+        /* Page Break */
+        .page-break {
+            page-break-after: always;
+        }
+        
+        /* Utility */
+        .text-center {
+            text-align: center;
+        }
+        
+        strong {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="cover-decoration"></div>
+        <div class="logo">🌱</div>
+        <div class="company-name">GREEN VISION</div>
+        <div class="tagline">Future of Agriculture Technology</div>
+        
+        <h1 class="report-title">{{ title }}</h1>
+        <p class="report-subtitle">AI-Powered Agriculture & Climate Analysis Report</p>
+        
+        <div class="meta-info">
+            <div class="meta-row">
+                <span class="meta-label">Generated:</span>
+                <span class="meta-value">{{ generated_at }}</span>
+            </div>
+            {% if date_range.start %}
+            <div class="meta-row">
+                <span class="meta-label">Date Range:</span>
+                <span class="meta-value">{{ date_range.start }} to {{ date_range.end }}</span>
+            </div>
+            {% endif %}
+            <div class="meta-row">
+                <span class="meta-label">Report Type:</span>
+                <span class="meta-value">Comprehensive Analysis</span>
+            </div>
+            <div class="meta-row">
+                <span class="meta-label">Models Analyzed:</span>
+                <span class="meta-value">{{ models|length }} AI Model{% if models|length != 1 %}s{% endif %}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Table of Contents -->
+    <div class="page-break">
+        <div class="page-header">
+            <h2 class="page-title">📋 Table of Contents</h2>
+            <p class="page-subtitle">Navigate through the comprehensive analysis</p>
+        </div>
+        
+        <ul class="toc-list">
+            {% for model in models %}
+            <li class="toc-item">
+                <span class="toc-number">{{ forloop.counter }}.</span>
+                <span class="toc-title">{{ model.name }}</span>
+            </li>
+            {% endfor %}
+            <li class="toc-item">
+                <span class="toc-number">{{ models|length|add:1 }}.</span>
+                <span class="toc-title">Summary & Recommendations</span>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Model Sections -->
+    {% for model in models %}
+    <div class="{% if not forloop.first %}page-break{% endif %}">
+        <div class="model-section">
+            <div class="model-header">
+                <span class="model-icon">
+                    {% if model.icon == 'cloud-sun' %}☁️{% endif %}
+                    {% if model.icon == 'leaf' %}🌿{% endif %}
+                    {% if model.icon == 'sun' %}☀️{% endif %}
+                    {% if model.icon == 'cloud-sun-rain' %}🌦️{% endif %}
+                </span>
+                <span class="model-title">{{ model.name }}</span>
+            </div>
+            
+            <div class="model-content">
+                {% if model.name == 'Weather Forecast' and model.data %}
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">📍 Location:</span>
+                        <span class="info-value">Latitude {{ model.data.location.latitude }}°, Longitude {{ model.data.location.longitude }}°</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">📅 Date:</span>
+                        <span class="info-value">{{ model.data.date.day }}/{{ model.data.date.month }}/{{ model.data.date.year }}</span>
+                    </div>
+                </div>
+                
+                <div class="data-grid">
+                    <div class="data-card">
+                        <div class="data-icon">🌡️</div>
+                        <div class="data-label">Temperature</div>
+                        <div class="data-value">{{ model.data.temperature }}<span class="data-unit">°C</span></div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-icon">💧</div>
+                        <div class="data-label">Precipitation</div>
+                        <div class="data-value">{{ model.data.precipitation }}<span class="data-unit">mm</span></div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-icon">💨</div>
+                        <div class="data-label">Humidity</div>
+                        <div class="data-value">{{ model.data.humidity }}<span class="data-unit">%</span></div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if model.name == 'NDVI Vegetation Health' and model.data %}
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">📍 Location:</span>
+                        <span class="info-value">Latitude {{ model.data.location.latitude }}°, Longitude {{ model.data.location.longitude }}°</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">🌿 NDVI Value:</span>
+                        <span class="info-value"><strong>{{ model.data.ndvi_value }}</strong></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">💚 Health Status:</span>
+                        <span class="info-value"><strong>{{ model.data.health_status }}</strong></span>
+                    </div>
+                </div>
+                
+                {% if model.data.recommendations %}
+                <h3 class="section-title">
+                    <span class="section-icon">💡</span>
+                    Recommendations
+                </h3>
+                <ul class="recommendations-list">
+                    {% for rec in model.data.recommendations %}
+                    <li class="recommendation-item">{{ rec }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endif %}
+                
+                {% if model.name == 'Drought Prediction' and model.data %}
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">📍 Location:</span>
+                        <span class="info-value">Latitude {{ model.data.location.latitude }}°, Longitude {{ model.data.location.longitude }}°</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">⚠️ Risk Level:</span>
+                        <span class="info-value">
+                            <span class="status-badge {% if 'High' in model.data.risk_level %}status-danger{% elif 'Medium' in model.data.risk_level %}status-warning{% else %}status-good{% endif %}">
+                                {{ model.data.risk_level }}
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                
+                {% if model.data.predictions %}
+                <h3 class="section-title">
+                    <span class="section-icon">📊</span>
+                    Drought Severity Levels
+                </h3>
+                <div class="data-grid">
+                    {% for key, value in model.data.predictions.items %}
+                    <div class="data-card">
+                        <div class="data-label">{{ key }}</div>
+                        <div class="data-value">{{ value }}<span class="data-unit">%</span></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <!-- Map Snapshot -->
+    {% if map_snapshot %}
+    <div class="page-break">
+        <div class="page-header">
+            <h2 class="page-title">🗺️ Geographic Visualization</h2>
+            <p class="page-subtitle">Interactive map view of analyzed locations</p>
+        </div>
+        
+        <div class="map-container">
+            <img src="{{ map_snapshot }}" alt="Map Snapshot" class="map-image">
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Summary & Conclusions -->
+    <div class="page-break">
+        <div class="page-header">
+            <h2 class="page-title">📊 Summary & Conclusions</h2>
+            <p class="page-subtitle">Comprehensive analysis and actionable insights</p>
+        </div>
+        
+        <div class="summary-box">
+            <p class="summary-text">
+                This comprehensive report provides <strong>AI-powered analysis</strong> of agricultural and climate conditions 
+                for the selected location and time period. The data has been processed using advanced machine 
+                learning models trained on satellite imagery, historical climate data, and real-time environmental 
+                monitoring systems.
+            </p>
+            
+            <p class="summary-text">
+                Our analysis combines multiple data sources including <strong>NDVI vegetation indices</strong>, weather patterns, 
+                drought risk assessments, and climate forecasts to provide you with actionable insights for 
+                optimal agricultural decision-making and sustainable farming practices.
+            </p>
+            
+            <div class="key-insights">
+                <div class="insight-title">🎯 Key Insights & Recommendations</div>
+                <div class="insight-item">All predictions are based on current data and historical patterns analyzed by our advanced AI models</div>
+                <div class="insight-item">Regular monitoring is recommended for optimal agricultural management and proactive risk mitigation</div>
+                <div class="insight-item">Combine multiple model outputs for comprehensive decision-making and strategic planning</div>
+                <div class="insight-item">Environmental conditions can change rapidly - stay updated with real-time monitoring systems</div>
+                <div class="insight-item">Contact Green Vision support team for detailed analysis, expert consultation, and customized solutions</div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="report-footer">
+            <div class="footer-logo">GREEN VISION</div>
+            <div class="footer-text">
+                <strong>Future of Agriculture Technology</strong><br>
+                AI-Powered Solutions for Sustainable Farming & Climate Resilience
+            </div>
+            <div class="copyright">
+                © 2025 Green Vision. All rights reserved.<br>
+                This report was generated automatically by Green Vision AI Models System.<br>
+                For support and inquiries, visit our website or contact our team.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
